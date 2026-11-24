@@ -14,13 +14,13 @@ window.STILLFIRE = {
     additional_night_price: 250,
     free_delivery_miles: 30,
     per_mile_fee: 2.5,
-    damage_deposit: 500,
+    damage_deposit: 250,
     firewood_bundle_price: 15
   },
 
   // Change the version whenever the agreement wording changes. Every signature
   // records the version and the full text that was signed.
-  waiverVersion: "2026-11-23.1",
+  waiverVersion: "2026-11-23.2",
 
   // Fill these in after the attorney review. They are inserted into the agreement.
   legal: {
@@ -30,7 +30,7 @@ window.STILLFIRE = {
     maxTemp: "[MAX TEMP]",
     maxOccupancy: "[MAX OCCUPANCY]",
     minAge: "[MINIMUM AGE]",
-    deposit: "$500",
+    deposit: "$250",
     cleaningFee: "[CLEANING FEE]",
     lostRentalRate: "[LOST-RENTAL DAILY RATE]",
     cancellation: "[CANCELLATION TERMS]",
