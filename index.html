@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-36 -62 72 112%27%3E%3Cpath d=%27M10,-58 C4,-40 -24,-22 -24,10 C-24,32 -12,46 2,46 C16,46 26,34 26,16 C26,-2 12,-10 10,-28 C9,-38 12,-48 10,-58 Z%27 fill=%27%23D8472A%27/%3E%3Cpath d=%27M6,-4 C2,8 -10,15 -10,27 C-10,36 -4,41 3,41 C10,41 14,35 14,28 C14,18 7,11 6,-4 Z%27 fill=%27%23F4B860%27/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
-<script>try{var t=localStorage.getItem("stillfire-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<script>try{var t=localStorage.getItem("stillfire-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -24,12 +24,14 @@
 
 <header class="site-head">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Stillfire Sauna Co. home">
-      <span class="brand-word">STILL<svg aria-hidden="true"><use href="#flame"/></svg>FIRE</span>
-      <span class="brand-sub">SAUNA CO.</span>
-    </a>
+    <div class="head-left">
+      <button class="theme-btn" type="button" id="themeBtn" aria-label="Switch to dark version"><span class="dot" aria-hidden="true"></span><span id="themeLabel">Dark</span></button>
+      <a class="brand" href="#top" aria-label="Stillfire Sauna Co. home">
+        <span class="brand-word">STILL<svg aria-hidden="true"><use href="#flame"/></svg>FIRE</span>
+        <span class="brand-sub">SAUNA CO.</span>
+      </a>
+    </div>
     <nav class="nav" aria-label="Main">
-      <button class="theme-btn" type="button" id="themeBtn" aria-label="Switch to light version"><span class="dot" aria-hidden="true"></span><span id="themeLabel">Light</span></button>
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>

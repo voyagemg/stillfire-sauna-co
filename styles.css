@@ -1,18 +1,18 @@
-/* Stillfire Sauna Co. — site styles. Two themes, switched from the header: dark (default) and light. */
+/* Stillfire Sauna Co. — site styles. Two themes, switched from the header: light (default) and dark. */
 :root {
   --ember: #D8472A; --ember-btn: #C23E22; --ember-btn-h: #A9351C; --amber: #F4B860; --ink: #1B1917;
   --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --sans: 'Jost', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
   --wrap: 1120px;
-  /* dark theme */
-  --bg: #1B1917; --bg2: #23201D; --card: #26231F; --fg: #E9EBE8; --soft: #D6D8D4; --mute: #B4B0A9; --line: #3F3B36;
-  --accent: #F4B860; --accent-h: #FFD08A; --num: #E0603F; --head: rgba(27, 25, 23, 0.96);
-  --day: #2F2B27; --day-off: #211E1B; --day-off-t: #8E8A84; --day-in: #5A2A1E; --day-in-b: #8A3F2C; --field-b: #8d8a85;
-}
-[data-theme="light"] {
+  /* light theme (default) */
   --bg: #F1EBE0; --bg2: #F7F2E9; --card: #FFFCF7; --fg: #1B1917; --soft: #4A4744; --mute: #6B6762; --line: #D6CCBC;
   --accent: #9A2E16; --accent-h: #6E1E0C; --num: #C23E22; --head: rgba(241, 235, 224, 0.96);
   --day: #FFFCF7; --day-off: #E4DCCE; --day-off-t: #746D62; --day-in: #F6D9D1; --day-in-b: #E2A898; --field-b: #8d8a85;
+}
+[data-theme="dark"] {
+  --bg: #1B1917; --bg2: #23201D; --card: #26231F; --fg: #E9EBE8; --soft: #D6D8D4; --mute: #B4B0A9; --line: #3F3B36;
+  --accent: #F4B860; --accent-h: #FFD08A; --num: #E0603F; --head: rgba(27, 25, 23, 0.96);
+  --day: #2F2B27; --day-off: #211E1B; --day-off-t: #8E8A84; --day-in: #5A2A1E; --day-in-b: #8A3F2C; --field-b: #8d8a85;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
@@ -34,16 +34,19 @@ p { margin: 0 0 1em; }
 
 /* header */
 .site-head { position: sticky; top: 0; z-index: 20; background: var(--head); border-bottom: 1px solid var(--line); }
-.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+.site-head .wrap { container-type: inline-size; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
 .brand { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--fg); min-height: 44px; justify-content: center; }
 .brand:hover { color: var(--fg); }
 .brand-word { display: inline-flex; align-items: center; font-family: var(--serif); font-weight: 600; font-size: 1.5rem; letter-spacing: 0.24em; line-height: 1; padding-left: 0.24em; color: var(--fg); }
 .brand-word svg { width: 0.5em; height: 0.78em; margin: 0 0.02em 0 -0.12em; }
 .brand-sub { font-size: 0.56rem; letter-spacing: 0.5em; padding-left: 0.5em; color: var(--soft); line-height: 1; }
-.nav { display: flex; align-items: center; gap: 4px 6px; flex-wrap: wrap; }
+.head-left { display: flex; align-items: center; gap: 14px; }
+.nav { display: flex; align-items: center; gap: 4px 6px; flex-wrap: wrap; transition: transform 0.45s ease; }
+/* While the big logo is in view the menu sits centred; it slides right as the small logo appears. */
+.logo-in-hero .nav { transform: translateX(calc(50% - 50cqw)); }
 .nav a { color: var(--fg); text-decoration: none; padding: 10px 12px; font-size: 0.95rem; letter-spacing: 0.06em; min-height: 44px; display: inline-flex; align-items: center; }
 .nav a:hover { color: var(--accent); }
-.theme-btn { min-height: 44px; padding: 8px 14px; margin-right: 6px; border: 1px solid var(--mute); border-radius: 22px; background: transparent; color: var(--fg); font: inherit; font-size: 0.86rem; letter-spacing: 0.06em; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.theme-btn { min-height: 44px; padding: 8px 14px; border: 1px solid var(--mute); border-radius: 22px; background: transparent; color: var(--fg); font: inherit; font-size: 0.86rem; letter-spacing: 0.06em; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
 .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 .theme-btn .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 24px; border-radius: 3px; border: 1px solid var(--ember-btn); background: var(--ember-btn); color: #fff; font-family: var(--sans); font-size: 1rem; font-weight: 500; letter-spacing: 0.08em; text-decoration: none; cursor: pointer; }
@@ -180,6 +183,8 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
   .summary dl { grid-template-columns: minmax(0, 1fr); }
   .site-head { position: static; }
   .logo-in-hero .brand { display: none; }
+  .logo-in-hero .nav { transform: none; }
+  .head-left { width: 100%; justify-content: center; }
   .site-head .wrap { justify-content: center; }
   .nav { justify-content: center; }
   .nav a { padding: 8px 10px; }
