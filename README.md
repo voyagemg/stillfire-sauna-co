@@ -62,3 +62,10 @@ A static website (GitHub Pages) plus a booking backend (Supabase) and automatic 
 ## What was tested
 
 `supabase/schema.sql` was run against a local Postgres with stand-ins for Supabase's auth, scheduler and HTTP extensions. Overlapping, enclosed and blocked-date requests were refused; declined dates reopened; visitors could not read tables or internal functions; non-admin sign-ins saw nothing; reminders, follow-ups and the daily summary queued as expected. The website was clicked through in a browser in preview mode. **Not yet tested:** anything against the real Supabase project, real email delivery, and owner sign-in.
+
+## Digital business card
+
+`card/` holds Henry's digital business card, served at `stillfiresaunaco.com/card/`.
+`card/henry-tryggestad.vcf` is the contact the "Save contact" button downloads; `card/qr.svg` opens the card.
+To add Facebook or Instagram, open `card/index.html`, find the `FACEBOOK and INSTAGRAM` note,
+put the address in the `href` and delete the word `hidden` from that row.

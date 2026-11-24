@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Tryggestad;Henry;;;
+FN:Henry Tryggestad
+ORG:Stillfire Sauna Co.
+TITLE:Owner
+TEL;TYPE=CELL,VOICE:+12183160004
+EMAIL;TYPE=INTERNET,WORK:booking@stillfiresaunaco.com
+URL:https://stillfiresaunaco.com
+NOTE:Mobile wood-fired sauna rental in Minnesota.
+END:VCARD

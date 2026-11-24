@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Henry Tryggestad — Stillfire Sauna Co.</title>
+<meta name="description" content="Henry Tryggestad, owner of Stillfire Sauna Co. Mobile wood-fired sauna rental in Minnesota. Call, text, email or save the contact.">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Henry Tryggestad — Stillfire Sauna Co.">
+<meta property="og:description" content="Owner, Stillfire Sauna Co. Mobile wood-fired sauna rental in Minnesota.">
+<meta property="og:url" content="https://stillfiresaunaco.com/card/">
+<meta name="theme-color" content="#1B1917">
+<link rel="canonical" href="https://stillfiresaunaco.com/card/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-36 -62 72 112%27%3E%3Cpath d=%27M10,-58 C4,-40 -24,-22 -24,10 C-24,32 -12,46 2,46 C16,46 26,34 26,16 C26,-2 12,-10 10,-28 C9,-38 12,-48 10,-58 Z%27 fill=%27%23D8472A%27/%3E%3Cpath d=%27M6,-4 C2,8 -10,15 -10,27 C-10,36 -4,41 3,41 C10,41 14,35 14,28 C14,18 7,11 6,-4 Z%27 fill=%27%23F4B860%27/%3E%3C/svg%3E">
+<script>try{var t=localStorage.getItem("stillfire-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<style>
+:root {
+  --ember: #D8472A; --ember-btn: #C23E22; --ember-btn-h: #A9351C; --amber: #F4B860;
+  --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans: 'Jost', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  /* dark (default for the card) */
+  --page: #131110; --card: #1B1917; --fg: #E9EBE8; --soft: #D6D8D4; --mute: #A9A59E; --line: #3A3631;
+  --accent: #F4B860; --row-h: #24211E; --glow: rgba(216, 71, 42, 0.30); --glow2: rgba(244, 184, 96, 0.10);
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+[data-theme="light"] {
+  --page: #E9E1D3; --card: #FFFCF7; --fg: #1B1917; --soft: #4A4744; --mute: #6B6762; --line: #D6CCBC;
+  --accent: #9A2E16; --row-h: #F7F2E9; --glow: rgba(216, 71, 42, 0.16); --glow2: rgba(244, 184, 96, 0.22);
+  --shadow: 0 30px 70px rgba(60, 40, 20, 0.18);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; min-height: 100dvh; background: var(--page); color: var(--fg);
+  font-family: var(--sans); font-size: 1.0625rem; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: max(20px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+}
+[hidden] { display: none !important; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.card {
+  width: 100%; max-width: 420px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; position: relative;
+}
+/* thin ember line across the top edge, like foil on a printed card */
+.card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--ember) 30%, var(--amber) 50%, var(--ember) 70%, transparent);
+}
+
+/* logo */
+.top { container-type: inline-size; position: relative; padding: 56px 24px 40px; text-align: center; border-bottom: 1px solid var(--line); overflow: hidden; }
+.top::before {
+  content: ""; position: absolute; left: 50%; top: 46%; width: 340px; height: 340px; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, var(--glow), var(--glow2) 55%, transparent 100%);
+  animation: breathe 6s ease-in-out infinite; pointer-events: none;
+}
+@keyframes breathe { 0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(0.94); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); } }
+.logo { position: relative; display: inline-flex; flex-direction: column; align-items: center; gap: 16px; text-decoration: none; color: var(--fg); }
+.logo-word {
+  display: inline-flex; align-items: center; font-family: var(--serif); font-weight: 600;
+  font-size: min(10cqw, 2.9rem); letter-spacing: 0.24em; padding-left: 0.24em; line-height: 1; white-space: nowrap;
+}
+.logo-word svg { width: 0.48em; height: 0.75em; margin: 0 0.04em 0 -0.14em; overflow: visible; }
+.logo-word .inner { transform-origin: 2px 41px; animation: flicker 3.2s ease-in-out infinite; }
+@keyframes flicker { 0%, 100% { transform: scale(1, 1); } 35% { transform: scale(0.94, 1.07); } 65% { transform: scale(1.05, 0.95); } }
+.logo-sub { display: flex; align-items: center; gap: 14px; font-size: 0.72rem; letter-spacing: 0.5em; padding-left: 0.5em; line-height: 1; color: var(--soft); }
+.logo-sub i { display: block; width: 44px; height: 1px; background: var(--mute); }
+
+/* person */
+.who { padding: 34px 24px 26px; text-align: center; }
+.who h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2rem, 9vw, 2.5rem); line-height: 1.1; letter-spacing: 0.01em; margin: 0 0 10px; }
+.role { font-size: 0.78rem; letter-spacing: 0.34em; padding-left: 0.34em; text-transform: uppercase; color: var(--accent); margin: 0; }
+.line { color: var(--mute); font-size: 0.95rem; margin: 14px 0 0; text-wrap: balance; }
+
+/* save */
+.actions { padding: 0 24px 26px; display: grid; gap: 10px; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 12px 20px; border-radius: 3px;
+  border: 1px solid var(--ember-btn); background: var(--ember-btn); color: #fff; font: 500 1rem var(--sans); letter-spacing: 0.1em;
+  text-decoration: none; cursor: pointer; width: 100%;
+}
+.btn:hover { background: var(--ember-btn-h); border-color: var(--ember-btn-h); }
+.btn.ghost { background: transparent; border-color: var(--line); color: var(--fg); }
+.btn.ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+.btn svg { width: 19px; height: 19px; flex: none; }
+
+/* contact rows */
+.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.rows li + li { border-top: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: 16px; padding: 15px 24px; min-height: 68px; text-decoration: none; color: var(--fg); transition: background 0.2s ease; }
+.row:hover { background: var(--row-h); }
+.ico { flex: none; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; display: grid; place-items: center; color: var(--accent); }
+.ico svg { width: 18px; height: 18px; }
+.txt { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.lbl { font-size: 0.7rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--mute); }
+.val { font-size: clamp(0.86rem, 4.1vw, 1.06rem); overflow-wrap: anywhere; }
+.split { display: flex; }
+.split .row { flex: 1; }
+.split .side { flex: none; padding: 15px 22px; border-left: 1px solid var(--line); font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); gap: 8px; }
+
+/* share */
+.share { border-top: 1px solid var(--line); padding: 26px 24px 30px; text-align: center; }
+.qr { width: 148px; height: 148px; padding: 12px; background: #F4F1EA; border-radius: 4px; margin: 0 auto 14px; display: block; }
+.share p { margin: 0 0 16px; font-size: 0.86rem; letter-spacing: 0.04em; color: var(--mute); }
+.share .btn { max-width: 240px; margin: 0 auto; min-height: 46px; font-size: 0.92rem; }
+
+.foot { margin-top: 22px; font-size: 0.72rem; letter-spacing: 0.3em; padding-left: 0.3em; text-transform: uppercase; color: var(--mute); text-align: center; }
+.foot a { text-decoration: none; }
+.foot a:hover { color: var(--accent); }
+
+@media (max-width: 350px) {
+  .who, .actions, .share { padding-left: 16px; padding-right: 16px; }
+  .row { padding-left: 16px; padding-right: 16px; gap: 12px; }
+  .split .side { padding: 15px 16px; }
+  .who h1 { font-size: 1.75rem; }
+}
+@media (prefers-reduced-motion: reduce) { .top::before, .logo-word .inner { animation: none; } }
+@media print { body { background: #fff; } .card { box-shadow: none; } .share .btn, .actions { display: none; } }
+</style>
+</head>
+<body>
+
+<main class="card">
+
+  <div class="top">
+    <a class="logo" href="https://stillfiresaunaco.com" aria-label="Stillfire Sauna Co. website">
+      <span class="logo-word" aria-hidden="true">STILL<svg viewBox="-36 -62 72 112"><path d="M10,-58 C4,-40 -24,-22 -24,10 C-24,32 -12,46 2,46 C16,46 26,34 26,16 C26,-2 12,-10 10,-28 C9,-38 12,-48 10,-58 Z" fill="#D8472A"/><path class="inner" d="M6,-4 C2,8 -10,15 -10,27 C-10,36 -4,41 3,41 C10,41 14,35 14,28 C14,18 7,11 6,-4 Z" fill="#F4B860"/></svg>FIRE</span>
+      <span class="logo-sub" aria-hidden="true"><i></i>SAUNA CO.<i></i></span>
+    </a>
+  </div>
+
+  <div class="who">
+    <h1>Henry Tryggestad</h1>
+    <p class="role">Owner</p>
+    <p class="line">Mobile wood-fired sauna rental<br>Minnesota</p>
+  </div>
+
+  <div class="actions">
+    <a class="btn" href="henry-tryggestad.vcf" download="Henry Tryggestad.vcf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M2.5 20c.8-3.6 3.8-5.5 7.5-5.5 1.6 0 3 .3 4.200 1"/><path d="M19 14v6M16 17h6"/></svg>
+      Save contact
+    </a>
+  </div>
+
+  <ul class="rows">
+    <li class="split">
+      <a class="row" href="tel:+12183160004">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4.200-2.100 1.500a12 12 0 0 0 5.600 5.600l1.500-2.100 4.200 1.600V19a2 2 0 0 1-2.200 2A16.500 16.500 0 0 1 3 5.700 2 2 0 0 1 5 3.500z"/></svg></span>
+        <span class="txt"><span class="lbl">Call</span><span class="val" style="white-space:nowrap">(218) 316-0004</span></span>
+      </a>
+      <a class="row side" href="sms:+12183160004" aria-label="Text (218) 316-0004">
+        <svg style="width:18px;height:18px;flex:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9.500L5 20v-4H4z"/></svg>Text
+      </a>
+    </li>
+    <li>
+      <a class="row" href="mailto:booking@stillfiresaunaco.com">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.500"/><path d="m3.500 6.500 8.500 6.500 8.500-6.500"/></svg></span>
+        <span class="txt"><span class="lbl">Email</span><span class="val">booking@stillfiresaunaco.com</span></span>
+      </a>
+    </li>
+    <li>
+      <a class="row" href="https://stillfiresaunaco.com">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.800 2.500 2.800 15.500 0 18M12 3c-2.800 2.500-2.800 15.500 0 18"/></svg></span>
+        <span class="txt"><span class="lbl">Website</span><span class="val">stillfiresaunaco.com</span></span>
+      </a>
+    </li>
+
+    <!-- FACEBOOK and INSTAGRAM: when the accounts exist, put each address in the href
+         and delete the word "hidden" from that <li>. The row then shows on the card. -->
+    <li hidden>
+      <a class="row" href="https://www.facebook.com/YOUR-PAGE" rel="me">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.500 21v-8h2.700l.5-3.200h-3.200V7.700c0-1 .4-1.700 1.800-1.700h1.500V3.200C17.300 3.100 16.400 3 15.400 3 13 3 11.300 4.500 11.300 7.300v2.500H8.500V13h2.800v8z"/></svg></span>
+        <span class="txt"><span class="lbl">Facebook</span><span class="val">Stillfire Sauna Co.</span></span>
+      </a>
+    </li>
+    <li hidden>
+      <a class="row" href="https://www.instagram.com/YOUR-HANDLE" rel="me">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="3.500" width="17" height="17" rx="4.500"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.6" fill="currentColor"/></svg></span>
+        <span class="txt"><span class="lbl">Instagram</span><span class="val">@YOUR-HANDLE</span></span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="share">
+    <img class="qr" src="qr.svg" width="148" height="148" alt="QR code that opens this card: stillfiresaunaco.com/card">
+    <p>Scan to open this card on another phone</p>
+    <button class="btn ghost" type="button" id="shareBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.500M8 7l4-4 4 4M5 12v7.500h14V12"/></svg>
+      <span id="shareLabel">Share this card</span>
+    </button>
+  </div>
+
+</main>
+
+<p class="foot"><a href="https://stillfiresaunaco.com/#book">Check dates &amp; book</a></p>
+
+<script>
+(function () {
+  var btn = document.getElementById("shareBtn"), label = document.getElementById("shareLabel");
+  var url = "https://stillfiresaunaco.com/card/";
+  function flash(text) { label.textContent = text; setTimeout(function () { label.textContent = "Share this card"; }, 2200); }
+  btn.addEventListener("click", function () {
+    if (navigator.share) {
+      navigator.share({ title: "Henry Tryggestad — Stillfire Sauna Co.", text: "Henry Tryggestad, Stillfire Sauna Co.", url: url }).catch(function () {});
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { flash("Link copied"); }, function () { flash(url.replace("https://", "")); });
+    } else { flash(url.replace("https://", "")); }
+  });
+})();
+</script>
+</body>
+</html>
