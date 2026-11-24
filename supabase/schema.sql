@@ -38,7 +38,8 @@ create table public.settings (
   calendar_token text not null default replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''),
   updated_at timestamptz not null default now()
 );
-insert into public.settings default values;
+insert into public.settings (base_town, first_night_price, additional_night_price, free_delivery_miles, per_mile_fee, damage_deposit, firewood_bundle_price)
+values ('Perham', 300, 250, 30, 2.50, 500, 15);
 
 create table public.admins (
   email text primary key,

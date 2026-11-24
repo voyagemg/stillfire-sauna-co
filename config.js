@@ -7,6 +7,17 @@ window.STILLFIRE = {
   supabaseUrl: "",
   supabaseKey: "",
 
+  // Shown until the booking database answers, and whenever a dashboard setting is left empty.
+  defaults: {
+    base_town: "Perham",
+    first_night_price: 300,
+    additional_night_price: 250,
+    free_delivery_miles: 30,
+    per_mile_fee: 2.5,
+    damage_deposit: 500,
+    firewood_bundle_price: 15
+  },
+
   // Change the version whenever the agreement wording changes. Every signature
   // records the version and the full text that was signed.
   waiverVersion: "2026-11-23.1",
@@ -19,7 +30,7 @@ window.STILLFIRE = {
     maxTemp: "[MAX TEMP]",
     maxOccupancy: "[MAX OCCUPANCY]",
     minAge: "[MINIMUM AGE]",
-    deposit: "[DEPOSIT AMOUNT]",
+    deposit: "$500",
     cleaningFee: "[CLEANING FEE]",
     lostRentalRate: "[LOST-RENTAL DAILY RATE]",
     cancellation: "[CANCELLATION TERMS]",

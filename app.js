@@ -29,10 +29,16 @@
     preview = false;
   }
 
-  var info = { today: localToday(), settings: { min_notice_days: 2, max_nights: 14 }, unavailable: [] };
+  function withDefaults(s) {
+    var out = { min_notice_days: 2, max_nights: 14 }, d = CFG.defaults || {}, k;
+    for (k in d) out[k] = d[k];
+    for (k in (s || {})) if (s[k] !== null && s[k] !== undefined && s[k] !== "") out[k] = s[k];
+    return out;
+  }
+  var info = { today: localToday(), settings: withDefaults(), unavailable: [] };
   function demoInfo() {
     var t = localToday();
-    return { today: t, settings: { min_notice_days: 2, max_nights: 14 },
+    return { today: t, settings: withDefaults(),
       unavailable: [{ start: addDays(t, 6), end: addDays(t, 8) }, { start: addDays(t, 19), end: addDays(t, 22) }, { start: addDays(t, 33), end: addDays(t, 34) }] };
   }
 
@@ -76,7 +82,7 @@
     return db.rpc("get_public_info").then(function (r) {
       if (r.error) throw r.error;
       info = r.data;
-      info.settings = info.settings || {};
+      info.settings = withDefaults(info.settings);
       applySettings(); renderCal();
     }).catch(function () {
       // Could not reach the booking system (for example inside a sandboxed preview).
@@ -301,6 +307,19 @@
     });
 
     ["bMiles", "bWood"].forEach(function (id) { $("#" + id).addEventListener("input", renderSummary); });
+    var themeBtn = $("#themeBtn");
+    var paintTheme = function () {
+      var light = document.documentElement.getAttribute("data-theme") === "light";
+      $("#themeLabel").textContent = light ? "Dark" : "Light";
+      themeBtn.setAttribute("aria-label", "Switch to " + (light ? "dark" : "light") + " version");
+    };
+    themeBtn.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("stillfire-theme", next); } catch (e) {}
+      paintTheme();
+    });
+    paintTheme();
     window.addEventListener("hashchange", route);
     route();
     loadInfo();
