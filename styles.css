@@ -10,9 +10,9 @@
   --day: #2F2B27; --day-off: #211E1B; --day-off-t: #8E8A84; --day-in: #5A2A1E; --day-in-b: #8A3F2C; --field-b: #8d8a85;
 }
 [data-theme="light"] {
-  --bg: #E9EBE8; --bg2: #F4F5F3; --card: #FFFFFF; --fg: #1B1917; --soft: #4A4744; --mute: #6B6762; --line: #C9CBC7;
-  --accent: #9A2E16; --accent-h: #6E1E0C; --num: #C23E22; --head: rgba(233, 235, 232, 0.96);
-  --day: #FFFFFF; --day-off: #E1E3DF; --day-off-t: #77736E; --day-in: #F6D9D1; --day-in-b: #E2A898; --field-b: #8d8a85;
+  --bg: #F1EBE0; --bg2: #F7F2E9; --card: #FFFCF7; --fg: #1B1917; --soft: #4A4744; --mute: #6B6762; --line: #D6CCBC;
+  --accent: #9A2E16; --accent-h: #6E1E0C; --num: #C23E22; --head: rgba(241, 235, 224, 0.96);
+  --day: #FFFCF7; --day-off: #E4DCCE; --day-off-t: #746D62; --day-in: #F6D9D1; --day-in-b: #E2A898; --field-b: #8d8a85;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
