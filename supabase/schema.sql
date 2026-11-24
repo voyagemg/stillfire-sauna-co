@@ -21,6 +21,7 @@ create table public.settings (
   contact_email text,
   contact_phone text,
   owner_notify_email text,
+  copy_email text,                                   -- gets a separate copy of every automatic email
   first_night_price numeric(10,2),
   additional_night_price numeric(10,2),
   free_delivery_miles int,
@@ -228,11 +229,18 @@ $$;
 
 create or replace function app.queue_email(p_template text, p_to text, p_payload jsonb, p_dedupe text default null, p_send_after timestamptz default now())
 returns void language plpgsql security definer set search_path = '' as $$
+declare v_copy text;
 begin
   if p_to is null or trim(p_to) = '' then return; end if;
   insert into public.email_outbox (template, to_email, payload, dedupe_key, send_after)
   values (p_template, trim(p_to), coalesce(p_payload, '{}'::jsonb), p_dedupe, p_send_after)
   on conflict (dedupe_key) do nothing;
+  select nullif(trim(copy_email), '') into v_copy from public.settings;
+  if v_copy is not null and lower(v_copy) <> lower(trim(p_to)) then
+    insert into public.email_outbox (template, to_email, payload, dedupe_key, send_after)
+    values (p_template, v_copy, coalesce(p_payload, '{}'::jsonb), case when p_dedupe is null then null else p_dedupe || ':copy' end, p_send_after)
+    on conflict (dedupe_key) do nothing;
+  end if;
 end $$;
 
 -- Wakes the email function. Never allowed to break a booking if it fails.

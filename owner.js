@@ -9,7 +9,7 @@
 
   var FIELDS = [
     ["base_town", "Base town", "text"], ["contact_email", "Public contact email", "email"], ["contact_phone", "Public phone", "tel"],
-    ["owner_notify_email", "Send owner alerts to", "email"], ["first_night_price", "First night ($)", "number"],
+    ["owner_notify_email", "Send owner alerts to", "email"], ["copy_email", "Send a copy of every email to", "email"], ["first_night_price", "First night ($)", "number"],
     ["additional_night_price", "Each additional night ($)", "number"], ["free_delivery_miles", "Free delivery within (miles)", "number"],
     ["per_mile_fee", "Per mile beyond that ($)", "number"], ["max_delivery_miles", "Farthest delivery (miles)", "number"],
     ["damage_deposit", "Damage deposit ($)", "number"], ["firewood_bundle_price", "Firewood bundle ($)", "number"], ["seats", "Seats", "number"],
