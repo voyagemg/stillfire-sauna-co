@@ -319,6 +319,40 @@
     });
 
     ["bMiles", "bWood"].forEach(function (id) { $("#" + id).addEventListener("input", renderSummary); });
+    // Occasions: tap one to see how it tends to go, then carry it into the booking form.
+    var OCC = [
+      { t: "Cabin weekends", opt: "Cabin weekend", p: "Park it by the lake and make the sauna the centre of the stay. Fire it up in the afternoon and let people drift in and out all evening.", l: ["Two or three nights gives everyone a turn", "Set it near the water for the walk to the dock", "Add a few firewood bundles for long evenings"] },
+      { t: "Family gatherings", opt: "Family gathering", p: "Reunions, holidays and birthdays, with something to do besides eat. Grandparents and teenagers tend to find their own rounds.", l: ["Works well in a driveway or back yard", "A parent stays inside with any children", "Plan turns so no one waits in the cold"] },
+      { t: "Weddings and celebrations", opt: "Wedding or celebration", p: "A quiet place for the wedding party the day before, or a slow morning after. It gives a celebration somewhere calm to land.", l: ["Deliver the day before so it is ready", "Check with your venue about a wood stove on site", "Save the toasts for after the last round"] },
+      { t: "Retreats and teams", opt: "Retreat or team event", p: "A reset between sessions that people will actually remember. Small groups rotate through while the rest of the day carries on.", l: ["Run it in rounds of six or seven", "Every adult signs the agreement before using it", "Pair it with a fire pit for the people waiting"] },
+      { t: "Hunting and ice-fishing camp", opt: "Hunting or fishing camp", p: "Warm up properly after a long day in the cold. Nothing ends a day in the stand or on the ice like real heat.", l: ["We need a plowed, level spot to set it down", "No power hookup needed", "Light it before the last light and it is ready when you are back"] },
+      { t: "After the race", opt: "Race or sporting event", p: "Heat for tired legs after a ski, a ride or a long run. Bring it to the cabin where the team is staying.", l: ["Drink water before and between rounds", "Short rounds beat one long one", "Book early for race weekends"] }
+    ];
+    var occPanel = $("#occPanel");
+    function showOcc(i) {
+      var o = OCC[i];
+      $$(".occ-tab").forEach(function (b) { b.setAttribute("aria-selected", String(Number(b.getAttribute("data-occ")) === i)); });
+      occPanel.innerHTML = "<div><h3>" + esc(o.t) + "</h3><p>" + esc(o.p) + '</p><p style="margin-top:20px"><button class="btn" type="button" id="occBook">Check dates for this</button></p></div>' +
+        '<div><p class="eyebrow">Good to know</p><ul>' + o.l.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
+      occPanel.style.animation = "none"; void occPanel.offsetWidth; occPanel.style.animation = "";
+      $("#occBook").addEventListener("click", function () { $("#bOccasion").value = o.opt; location.hash = "#book"; });
+    }
+    $("#occ").addEventListener("click", function (e) { var b = e.target.closest(".occ-tab"); if (b) showOcc(Number(b.getAttribute("data-occ"))); });
+    showOcc(0);
+
+    // Phone menu: a button fixed at the bottom that opens the navigation from anywhere.
+    var fab = $("#fab"), sheet = $("#sheet"), back = $("#sheetBack");
+    var burger = $("#burger");
+    function setSheet(open) {
+      sheet.hidden = !open; back.hidden = !open;
+      fab.setAttribute("aria-expanded", String(open)); burger.setAttribute("aria-expanded", String(open));
+    }
+    fab.addEventListener("click", function () { setSheet(sheet.hidden); });
+    burger.addEventListener("click", function () { setSheet(sheet.hidden); });
+    back.addEventListener("click", function () { setSheet(false); });
+    sheet.addEventListener("click", function (e) { if (e.target.closest("a")) setSheet(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !sheet.hidden) { setSheet(false); fab.focus(); } });
+
     var themeBtn = $("#themeBtn");
     var paintTheme = function () {
       var light = document.documentElement.getAttribute("data-theme") === "light";

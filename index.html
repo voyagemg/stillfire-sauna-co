@@ -36,6 +36,7 @@
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
+      <button class="burger" type="button" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><span class="fab-bars" aria-hidden="true"></span></button>
       <a class="btn small" href="#book">Check dates</a>
     </nav>
   </div>
@@ -122,13 +123,17 @@
   <div class="wrap">
     <p class="eyebrow">Where it goes</p>
     <h2>Good company for a fire.</h2>
-    <div class="grid g3" style="margin-top:36px">
-      <div class="card"><h3>Cabin weekends</h3><p>Park it by the lake and make the sauna the centre of the stay.</p></div>
-      <div class="card"><h3>Family gatherings</h3><p>Reunions, holidays and birthdays, with something to do besides eat.</p></div>
-      <div class="card"><h3>Weddings and celebrations</h3><p>A quiet place for the wedding party the day before, or the morning after.</p></div>
-      <div class="card"><h3>Retreats and teams</h3><p>A reset between sessions that people will actually remember.</p></div>
-      <div class="card"><h3>Hunting and ice-fishing camp</h3><p>Warm up properly after a long day in the cold.</p></div>
-      <div class="card"><h3>After the race</h3><p>Heat for tired legs after a ski, a ride or a long run.</p></div>
+    <p class="lede">Tap an occasion to see how it tends to go.</p>
+    <div class="occ" id="occ">
+      <div class="occ-tabs" role="tablist" aria-label="Occasions">
+        <button type="button" role="tab" class="occ-tab" data-occ="0" aria-selected="true">Cabin weekends</button>
+        <button type="button" role="tab" class="occ-tab" data-occ="1" aria-selected="false">Family gatherings</button>
+        <button type="button" role="tab" class="occ-tab" data-occ="2" aria-selected="false">Weddings and celebrations</button>
+        <button type="button" role="tab" class="occ-tab" data-occ="3" aria-selected="false">Retreats and teams</button>
+        <button type="button" role="tab" class="occ-tab" data-occ="4" aria-selected="false">Hunting and ice-fishing camp</button>
+        <button type="button" role="tab" class="occ-tab" data-occ="5" aria-selected="false">After the race</button>
+      </div>
+      <div class="occ-panel card" id="occPanel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>
@@ -337,6 +342,19 @@
     </div>
   </div>
 </footer>
+
+<button class="fab" type="button" id="fab" aria-expanded="false" aria-controls="sheet"><span class="fab-bars" aria-hidden="true"></span>Menu</button>
+<div class="sheet-back" id="sheetBack" hidden></div>
+<nav class="sheet" id="sheet" aria-label="Quick menu" hidden>
+  <a href="#top">Home</a>
+  <a href="#how">How it works</a>
+  <a href="#sauna">The sauna</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#occasions">Occasions</a>
+  <a href="#faq">FAQ</a>
+  <a href="#contact">Contact</a>
+  <a class="btn" href="#book">Check dates</a>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
