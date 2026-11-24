@@ -200,7 +200,7 @@
     var est = estimate();
     var rows = [["Delivery", fmtDate(sel.start)], ["Pickup", fmtDate(sel.end)], ["Nights", nights()], ["Name", val("bName")], ["Phone", val("bPhone")], ["Email", val("bEmail")],
       ["Deliver to", val("bAddr") + ", " + val("bCity") + ", " + val("bState") + " " + val("bZip")], ["Group size", val("bGuests")], ["Occasion", val("bOccasion")],
-      ["Extra firewood", Number(val("bWood")) ? val("bWood") + " bundle(s)" : ""], ["Notes", val("bNotes")], ["Agreement", "Signed as " + val("aSig")],
+      ["Firewood", Number(val("bWood")) ? val("bWood") + " bundle(s)" : ""], ["Notes", val("bNotes")], ["Agreement", "Signed as " + val("aSig")],
       ["Estimate", est == null ? "We'll confirm your total by email" : money(est) + " before any delivery fee we confirm"]];
     return "<dl>" + rows.filter(function (r) { return r[1] !== "" && r[1] != null; }).map(function (r) { return "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>";
   }
