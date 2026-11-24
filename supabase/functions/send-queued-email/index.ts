@@ -4,7 +4,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-const FROM = Deno.env.get("STILLFIRE_FROM") ?? "Stillfire Sauna Co. <bookings@stillfiresaunaco.com>";
+const FROM = Deno.env.get("STILLFIRE_FROM") ?? "Stillfire Sauna Co. <booking@stillfiresaunaco.com>";
 
 type Biz = {
   base_town?: string; contact_email?: string; contact_phone?: string; delivery_time?: string;

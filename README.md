@@ -57,7 +57,7 @@ A static website (GitHub Pages) plus a booking backend (Supabase) and automatic 
 - **Prices, area, contact details:** the dashboard Settings tab. No code changes.
 - **Agreement wording:** edit `waiver.js`, then change `waiverVersion` in `config.js`. Each signature stores the version and the full text signed.
 - **Email wording:** `supabase/functions/send-queued-email/index.ts`, then redeploy the function.
-- **Sender address:** set a `STILLFIRE_FROM` secret on the function. Default is `Stillfire Sauna Co. <bookings@stillfiresaunaco.com>`.
+- **Sender address:** set a `STILLFIRE_FROM` secret on the function. Default is `Stillfire Sauna Co. <booking@stillfiresaunaco.com>`.
 
 ## What was tested
 
