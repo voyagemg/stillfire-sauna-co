@@ -4,8 +4,8 @@
 window.STILLFIRE = {
   // Booking database. Both values are safe to publish: the key only allows the
   // public booking functions, never direct access to customer records.
-  supabaseUrl: "",
-  supabaseKey: "",
+  supabaseUrl: "https://enorrqdjaoqfxkoyqagu.supabase.co",
+  supabaseKey: "sb_publishable_OBiJ-Vk0isjomgMu_K860g_h6RXSB7B",
 
   // Shown until the booking database answers, and whenever a dashboard setting is left empty.
   defaults: {
