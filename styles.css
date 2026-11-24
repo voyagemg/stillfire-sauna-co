@@ -60,6 +60,14 @@ section { padding: 88px 0; border-bottom: 1px solid var(--line); }
 .alt { background: var(--bg2); }
 .hero { padding: 96px 0 72px; text-align: center; }
 .hero .lede { margin: 0 auto 2rem; }
+.hero h1 { font-size: clamp(2rem, 4.4vw, 3.1rem); }
+.hero-logo { display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2.2vw, 26px); margin: 0 0 clamp(36px, 5vw, 60px); color: var(--fg); }
+.hero-word { display: inline-flex; align-items: center; font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 9vw, 6.4rem); letter-spacing: 0.26em; padding-left: 0.26em; line-height: 1; }
+.hero-word svg { width: 0.48em; height: 0.75em; margin: 0 0.04em 0 -0.14em; }
+.hero-sub { display: flex; align-items: center; gap: clamp(10px, 2vw, 22px); font-size: clamp(0.7rem, 1.5vw, 1rem); letter-spacing: 0.5em; padding-left: 0.5em; line-height: 1; color: var(--soft); }
+.hero-sub i { display: block; width: clamp(40px, 9vw, 110px); height: 1px; background: var(--mute); }
+.brand { transition: opacity 0.3s ease, visibility 0.3s; }
+.logo-in-hero .brand { opacity: 0; visibility: hidden; pointer-events: none; }
 .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 56px; }
 .facts div { background: var(--bg); padding: 20px 12px; font-size: 0.86rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--soft); }
@@ -171,6 +179,7 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
   .spec dt { border-bottom: 0; padding-bottom: 0; }
   .summary dl { grid-template-columns: minmax(0, 1fr); }
   .site-head { position: static; }
+  .logo-in-hero .brand { display: none; }
   .site-head .wrap { justify-content: center; }
   .nav { justify-content: center; }
   .nav a { padding: 8px 10px; }

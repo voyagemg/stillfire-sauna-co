@@ -103,6 +103,18 @@
       if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
     });
     if (view === "owner" && window.SF_OWNER) window.SF_OWNER.show();
+    homeShown = view === "home"; paintBrand();
+  }
+
+  // The big logo sits in the hero; the small one in the menu appears once the hero logo scrolls away.
+  var homeShown = true, heroLogoSeen = true;
+  function paintBrand() { document.documentElement.classList.toggle("logo-in-hero", homeShown && heroLogoSeen); }
+  function watchHeroLogo() {
+    var el = $("#heroLogo");
+    if (!el || !("IntersectionObserver" in window)) { heroLogoSeen = false; paintBrand(); return; }
+    new IntersectionObserver(function (entries) {
+      heroLogoSeen = entries[entries.length - 1].isIntersecting; paintBrand();
+    }, { rootMargin: "-70px 0px 0px 0px" }).observe(el);
   }
 
   // ------------------------------------------------------------ calendar
@@ -321,6 +333,7 @@
     });
     paintTheme();
     window.addEventListener("hashchange", route);
+    watchHeroLogo();
     route();
     loadInfo();
   }
