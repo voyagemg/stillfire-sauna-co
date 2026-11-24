@@ -76,6 +76,13 @@ section { padding: 88px 0; border-bottom: 1px solid var(--line); }
 .facts div { background: var(--bg); padding: 20px 12px; font-size: 0.86rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--soft); }
 .photo { border: 1px dashed var(--mute); color: var(--mute); display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 0.9rem; letter-spacing: 0.08em; min-height: 280px; background: var(--bg2); }
 .hero .photo { margin-top: 56px; min-height: 380px; }
+.shot { display: block; width: 100%; height: auto; border: 1px solid var(--line); background: var(--bg2); }
+.hero-shot { margin-top: 56px; aspect-ratio: 16 / 9; object-fit: cover; }
+.gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+.gallery figure { margin: 0; overflow: hidden; }
+.gallery .shot { aspect-ratio: 1; object-fit: cover; transition: transform 0.5s ease; }
+.gallery figure:hover .shot { transform: scale(1.04); }
+.gallery figcaption { font-size: 0.9rem; color: var(--soft); padding-top: 10px; }
 .grid { display: grid; gap: 28px; }
 .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -197,6 +204,7 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
   .g3, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .split { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 620px) {
   .g2, .g3, .g4, .row2, .row3, .cal-months, .o-meta { grid-template-columns: minmax(0, 1fr); }
