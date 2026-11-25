@@ -125,7 +125,8 @@
   var viewMonth = null;
   var product = "trailer";
   function isTaken(iso) {
-    return ((product === "tent" ? info.unavailable_tent : info.unavailable) || []).some(function (r) { return r.start <= iso && iso <= r.end; });
+    var lists = (product !== "tent" ? info.unavailable || [] : []).concat(product !== "trailer" ? info.unavailable_tent || [] : []);
+    return lists.some(function (r) { return r.start <= iso && iso <= r.end; });
   }
   function clash(list) { return !!(sel.start && sel.end) && (list || []).some(function (r) { return r.start <= sel.end && sel.start <= r.end; }); }
   function on(id) { var el = $("#" + id); return !!(el && el.checked && !el.disabled); }
@@ -142,7 +143,7 @@
   }
   function itemsText() {
     var wood = Number(($("#bWood") || {}).value || 0);
-    return [product === "tent" ? "Tent Sauna (1 to 2 people)" : "Cedar Sauna",
+    return [product === "tent" ? "Tent Sauna (1 to 2 people)" : product === "both" ? "Cedar Sauna and Tent Sauna" : "Cedar Sauna",
       on("bTub") ? "ice tub" + (on("bTubIce") ? " with first-day ice" : " (no ice)") : "",
       on("bBath") ? "ice bath" + (on("bBathIce") ? " with first-day ice" : " (no ice)") : "",
       wood ? wood + " firewood bundle" + (wood > 1 ? "s" : "") : ""].filter(Boolean).join("; ");
@@ -155,8 +156,9 @@
     var miles = Number(($("#bMiles") || {}).value || 0);
     var wood = Number(($("#bWood") || {}).value || 0);
     var n = function (v) { return Number(v || 0); };
-    var first = product === "tent" ? n(s.tent_first_night_price) : n(s.first_night_price);
-    var more = product === "tent" ? n(s.tent_additional_night_price != null ? s.tent_additional_night_price : s.tent_first_night_price) : n(s.additional_night_price != null ? s.additional_night_price : s.first_night_price);
+    var tentMore = n(s.tent_additional_night_price != null ? s.tent_additional_night_price : s.tent_first_night_price), cedarMore = n(s.additional_night_price != null ? s.additional_night_price : s.first_night_price);
+    var first = (product !== "tent" ? n(s.first_night_price) : 0) + (product !== "trailer" ? n(s.tent_first_night_price) : 0);
+    var more = (product !== "tent" ? cedarMore : 0) + (product !== "trailer" ? tentMore : 0);
     return first + (nights - 1) * more +
       Math.max(miles - n(s.free_delivery_miles), 0) * n(s.per_mile_fee) + wood * n(s.firewood_bundle_price) +
       (on("bTub") ? n(s.ice_tub_first_price) + (nights - 1) * n(s.ice_tub_additional_price) + (on("bTubIce") ? n(s.ice_tub_ice_price) : 0) : 0) +

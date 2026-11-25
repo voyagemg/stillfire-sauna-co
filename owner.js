@@ -90,7 +90,7 @@
     return w.map(function (x) { return esc(x.signer_name) + " (" + esc(x.role) + (x.minors ? ", for: " + esc(x.minors) : "") + ")"; }).join("; ");
   }
   function items(b) {
-    return [b.product === "tent" ? "Tent Sauna" : "Cedar Sauna",
+    return [b.product === "tent" ? "Tent Sauna" : b.product === "both" ? "Cedar Sauna and Tent Sauna" : "Cedar Sauna",
       b.ice_tub ? "ice tub" + (b.ice_tub_ice ? " with first-day ice" : " (no ice)") : "",
       b.ice_bath ? "ice bath" + (b.ice_bath_ice ? " with first-day ice" : " (no ice)") : "",
       b.firewood_bundles ? b.firewood_bundles + " firewood bundle(s)" : ""].filter(Boolean).join("; ");
