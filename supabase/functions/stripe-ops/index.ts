@@ -66,23 +66,22 @@ async function createPayment(sb: ReturnType<typeof db>, b: any, a: any, site: st
 
     const cardParams = (types: string[]) => {
       const p: any = base("card");
-      p.payment_method_types = types;
+      p.allowed_payment_method_types = types;
       p.payment_intent_data.setup_future_usage = "off_session";
       p.line_items = [rental, item(`Card processing fee (${pct(a.fee_percent)}%)`, a.card_fee), item(`Minnesota sales tax (${pct(a.tax_percent)}%)`, a.card_tax)];
       return p;
     };
     try {
-      let s;
-      try { s = await stripe("POST", "checkout/sessions", cardParams(["card", "cashapp"]), `card2-${b.id}-${stamp}`); }
-      catch (_) { s = await stripe("POST", "checkout/sessions", cardParams(["card"]), `card1-${b.id}-${stamp}`); }
+      // Stripe drops any type here that is not switched on in the account, so Cash App is optional.
+      const s = await stripe("POST", "checkout/sessions", cardParams(["card", "cashapp"]), `card3-${b.id}-${stamp}`);
       patch.card_url = s.url; patch.card_session_id = s.id;
     } catch (e) { errors.push("Card link: " + msg(e)); }
 
     try {
       const p: any = base("bank");
-      p.payment_method_types = ["us_bank_account"];
+      p.allowed_payment_method_types = ["us_bank_account"];
       p.line_items = [rental, item(`Minnesota sales tax (${pct(a.tax_percent)}%)`, a.tax)];
-      const s = await stripe("POST", "checkout/sessions", p, `bank-${b.id}-${stamp}`);
+      const s = await stripe("POST", "checkout/sessions", p, `bank3-${b.id}-${stamp}`);
       patch.bank_url = s.url; patch.bank_session_id = s.id;
     } catch (_) { /* bank transfer not switched on in Stripe: the email simply omits it */ }
   } catch (e) { errors.push(msg(e)); }
@@ -99,7 +98,7 @@ async function depositHold(sb: ReturnType<typeof db>, b: any, a: any) {
   try {
     const pi = await stripe("POST", "payment_intents", {
       amount: cents(a.deposit), currency: "usd", customer: b.stripe_customer_id, payment_method: b.stripe_payment_method_id,
-      payment_method_types: ["card"], capture_method: "manual", off_session: true, confirm: true,
+      capture_method: "manual", off_session: true, confirm: true,
       description: `Stillfire damage deposit hold, booking ${b.ref}`, metadata: { booking_id: b.id, kind: "deposit" },
     }, `dep-${b.id}-${b.deposit_status}-${new Date().toISOString().slice(0, 10)}`);
     if (pi.status !== "requires_capture") return await fail(`The card did not authorize the hold (${pi.status}).`);
