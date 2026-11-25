@@ -73,7 +73,7 @@ function render(template: string, d: P): { subject: string; html: string } | nul
         bookingRows(d) +
         (d.estimate ? p(`Estimated total: <strong>${money(d.estimate)}</strong>. We'll confirm the final amount, including delivery, when we approve the booking.`) : p("We'll confirm your total, including delivery, when we approve the booking.")) +
         p("<strong>What happens next</strong>") +
-        list(["We check the calendar and your delivery location, usually within one day.", "You get a confirmation email, followed by an invoice.", "Your date is locked in once the invoice is paid."]) +
+        list(["We check the calendar and your delivery location, usually within one day.", "When we approve it, we email your total and a secure link to pay. You can pay by card, Apple Pay, bank transfer, cash or check.", "You then have 24 hours to pay. The sauna is not reserved until payment is received, and unpaid dates are released."]) +
         p(`Other adults in your group need to sign the agreement before they use the sauna. Send them this link and your booking number <strong>${esc(d.ref)}</strong>:<br><a href="${esc(guestLink(d))}">${esc(guestLink(d))}</a>`) +
         p(contactLine(b)), b) };
     case "booking_approved":
@@ -148,6 +148,17 @@ function render(template: string, d: P): { subject: string; html: string } | nul
         (up.length ? list(up.map((x) => `${esc(x.delivery_date)} to ${esc(x.pickup_date)}: ${esc(x.name)}, ${esc(x.address)}, ${esc(x.phone)} (${esc(x.ref)})`)) : "") +
         (d.failed_emails ? p(`<strong style="color:#C23E22">${esc(d.failed_emails)} email(s) failed to send in the last 7 days.</strong> Check the Emails tab in the dashboard.`) : "") +
         button(`${siteUrl(b)}/#owner`, "Open the dashboard"), b) };
+    }
+    case "generic": {
+      // Payment and deposit emails. The database supplies plain text; everything is escaped here.
+      const arr = (v: unknown) => (Array.isArray(v) ? v : []);
+      const okUrl = (u: unknown) => typeof u === "string" && /^https:\/\//.test(u);
+      return { subject: String(d.subject ?? "Stillfire Sauna Co."), html: layout(esc(d.heading ?? "Stillfire Sauna Co."),
+        arr(d.top).map((t) => p(`<strong>${esc(t)}</strong>`)).join("") +
+        (arr(d.rows).length ? table(arr(d.rows).map((r) => row(esc(r?.[0]), esc(r?.[1]))).join("")) : "") +
+        arr(d.buttons).filter((x) => okUrl(x?.url)).map((x) => button(x.url, esc(x.label))).join("") +
+        arr(d.paras).map((t) => p(esc(t))).join("") +
+        p(contactLine(b)), b) };
     }
     default:
       return null;
