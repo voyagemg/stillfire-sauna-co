@@ -15,13 +15,13 @@
   --day: #2F2B27; --day-off: #211E1B; --day-off-t: #8E8A84; --day-in: #5A2A1E; --day-in-b: #8A3F2C; --field-b: #8d8a85;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { font-size: 109%; scroll-behavior: smooth; scroll-padding-top: 84px; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 img, svg { max-width: 100%; }
 a { color: var(--accent); }
 a:hover { color: var(--accent-h); }
 h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.12; margin: 0 0 0.5em; letter-spacing: 0.01em; }
-h1 { font-size: clamp(2.6rem, 6.4vw, 4.6rem); }
+h1 { font-size: clamp(2.4rem, 6.4vw, 4.22rem); }
 h2 { font-size: clamp(2rem, 4.2vw, 3rem); }
 h3 { font-size: 1.5rem; }
 p { margin: 0 0 1em; }
@@ -63,9 +63,9 @@ section { padding: 88px 0; border-bottom: 1px solid var(--line); }
 .alt { background: var(--bg2); }
 .hero { padding: 96px 0 72px; text-align: center; }
 .hero .lede { margin: 0 auto 2rem; }
-.hero h1 { font-size: clamp(2rem, 4.4vw, 3.1rem); }
+.hero h1 { font-size: clamp(1.84rem, 4.4vw, 2.85rem); }
 .hero-logo { display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2.2vw, 26px); margin: 0 0 clamp(36px, 5vw, 60px); color: var(--fg); }
-.hero-word { display: inline-flex; align-items: center; font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem, 9vw, 6.4rem); letter-spacing: 0.26em; padding-left: 0.26em; line-height: 1; }
+.hero-word { display: inline-flex; align-items: center; font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 9vw, 5.87rem); letter-spacing: 0.26em; padding-left: 0.26em; line-height: 1; }
 .hero-word svg { width: 0.48em; height: 0.75em; margin: 0 0.04em 0 -0.14em; }
 .hero-sub { display: flex; align-items: center; gap: clamp(10px, 2vw, 22px); font-size: clamp(0.7rem, 1.5vw, 1rem); letter-spacing: 0.5em; padding-left: 0.5em; line-height: 1; color: var(--soft); }
 .hero-sub i { display: block; width: clamp(40px, 9vw, 110px); height: 1px; background: var(--mute); }
