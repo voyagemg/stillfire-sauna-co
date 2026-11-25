@@ -247,3 +247,7 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
 .msg .btn.ghost { color: #1B1917; border-color: #1B1917; background: #FFFCF7; }
 .msg .btn.ghost:hover { color: #9A2E16; border-color: #9A2E16; background: #FFFCF7; }
 .check[hidden] { display: none; }
+.pick .row3 .field { display: flex; flex-direction: column; margin-bottom: 0; }
+.pick .row3 .field label { white-space: nowrap; }
+.pick .row3 .field input { margin-top: auto; }
+@media (max-width: 620px) { .pick .row3 .field { margin-bottom: 14px; } }

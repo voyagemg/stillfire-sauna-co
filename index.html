@@ -257,10 +257,11 @@
       </fieldset>
       <fieldset class="pick"><legend>Your group, firewood and distance</legend>
         <div class="row3">
-          <div class="field"><label for="bGuests">How many people in your group, roughly?</label><input id="bGuests" type="number" min="1" max="500" inputmode="numeric"></div>
-          <div class="field"><label for="bWood">Firewood bundles (<span data-s="firewood_bundle_price" data-fmt="money"></span> each, about 4 to 6 hours of heat)</label><input id="bWood" type="number" min="0" max="50" value="0" inputmode="numeric"></div>
-          <div class="field"><label for="bMiles">Miles from <span data-s="base_town" data-ph="[BASE TOWN]"></span>, roughly (optional)</label><input id="bMiles" type="number" min="0" max="1000" inputmode="numeric"></div>
+          <div class="field"><label for="bGuests">People in your group</label><input id="bGuests" type="number" min="1" max="500" inputmode="numeric"></div>
+          <div class="field"><label for="bWood">Firewood bundles</label><input id="bWood" type="number" min="0" max="50" value="0" inputmode="numeric"></div>
+          <div class="field"><label for="bMiles">Miles from <span data-s="base_town" data-ph="[BASE TOWN]"></span></label><input id="bMiles" type="number" min="0" max="1000" inputmode="numeric"></div>
         </div>
+        <p class="hint">A rough headcount is fine. Firewood is <span data-s="firewood_bundle_price" data-fmt="money"></span> a bundle, and one bundle gives about 4 to 6 hours of heat. Miles is optional and lets us include delivery in your estimate.</p>
         <p class="hint" id="groupHint" hidden>The tent sauna fits one or two people at a time. For a bigger group, the Cedar Sauna seats up to ten.</p>
       </fieldset>
       <div class="summary" id="dateSummary" aria-live="polite"><p style="margin:0">No dates chosen yet.</p></div>
