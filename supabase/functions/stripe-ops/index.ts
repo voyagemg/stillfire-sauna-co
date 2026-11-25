@@ -54,7 +54,7 @@ async function createPayment(sb: ReturnType<typeof db>, b: any, a: any, site: st
     const deadline = Math.floor(new Date(b.pay_deadline).getTime() / 1000);
     const expires_at = Math.max(now + 31 * 60, Math.min(deadline, now + 24 * 3600 - 120));
     const item = (name: string, amount: unknown) => ({ quantity: 1, price_data: { currency: "usd", unit_amount: cents(amount), product_data: { name } } });
-    const rental = item(`Sauna rental, ${fmt(b.delivery_date)} to ${fmt(b.pickup_date)} (booking ${b.ref})`, a.subtotal);
+    const rental = item(`${b.product === "tent" ? "Tent sauna" : "Sauna"} rental${b.ice_tub || b.ice_bath ? " with cold plunge" : ""}, ${fmt(b.delivery_date)} to ${fmt(b.pickup_date)} (booking ${b.ref})`, a.subtotal);
     const base = (kind: string) => ({
       mode: "payment", customer, expires_at,
       success_url: `${site}/#paid`, cancel_url: `${site}/`,

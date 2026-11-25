@@ -15,12 +15,14 @@ window.STILLFIRE = {
     free_delivery_miles: 30,
     per_mile_fee: 2.5,
     damage_deposit: 250,
-    firewood_bundle_price: 15
+    firewood_bundle_price: 25, tent_first_night_price: 175, tent_additional_night_price: 125,
+    ice_tub_first_price: 100, ice_tub_additional_price: 25, ice_tub_ice_price: 100,
+    ice_bath_first_price: 75, ice_bath_additional_price: 25, ice_bath_ice_price: 50
   },
 
   // Change the version whenever the agreement wording changes. Every signature
   // records the version and the full text that was signed.
-  waiverVersion: "2026-11-24.1",
+  waiverVersion: "2026-11-25.1",
 
   // Fill these in after the attorney review. They are inserted into the agreement.
   legal: {

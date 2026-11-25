@@ -33,6 +33,7 @@ const button = (href: string, label: string) =>
 function bookingRows(d: P) {
   return table(
     row("Booking", esc(d.ref)) +
+      row("Renting", esc(d.items)) +
       row("Delivery", day(d.delivery_date) + (d.biz?.delivery_time ? `, ${esc(d.biz.delivery_time)}` : "")) +
       row("Pickup", day(d.pickup_date) + (d.biz?.pickup_time ? `, ${esc(d.biz.pickup_time)}` : "")) +
       row("Nights", esc(d.nights)) +
@@ -128,7 +129,7 @@ function render(template: string, d: P): { subject: string; html: string } | nul
         table(row("Booking", esc(d.ref)) + row("Name", esc(d.name)) + row("Phone", esc(d.phone)) + row("Email", esc(d.email)) +
           row("Delivery", day(d.delivery_date)) + row("Pickup", day(d.pickup_date)) + row("Nights", esc(d.nights)) + row("Address", esc(d.address)) +
           row("Miles from base", esc(d.miles_from_base)) + row("Occasion", esc(d.occasion)) + row("Group size", esc(d.guest_count)) +
-          row("Firewood bundles", d.firewood_bundles ? esc(d.firewood_bundles) : "") + row("Estimate", money(d.estimate)) + row("Notes", esc(d.notes))) +
+          row("Renting", esc(d.items)) + row("Estimate", money(d.estimate)) + row("Notes", esc(d.notes))) +
         p("The dates are held until you approve or decline.") + button(`${siteUrl(b)}/#owner`, "Open the dashboard"), b) };
     case "owner_pending_nudge":
       return { subject: `Still waiting on you: ${d.name} (${d.ref})`, html: layout(`A request is still waiting`,

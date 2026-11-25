@@ -6,7 +6,7 @@
     { t: "1. Parties and rental", b: [
       { p: "This Rental Agreement, Assumption of Risk, Release and Indemnity (the \"Agreement\") is between " + L.entity + ", doing business as Stillfire Sauna Co., of " + L.address + " (\"Stillfire\", \"we\", \"us\"), and the person who signs as the renter (\"Renter\", \"you\", \"I\")." },
       { ol: [
-        "**The equipment.** Stillfire rents you a mobile wood-fired sauna trailer and the accessories delivered with it (together, the \"Sauna\").",
+        "**The equipment.** Stillfire rents you the equipment named in your booking: a mobile wood-fired sauna trailer or a wood-fired tent sauna, any ice tub or ice bath you add, and the accessories delivered with them (together, the \"Sauna\"). Every part of this Agreement applies to all of that equipment.",
         "**Where and when.** The rental is for the dates and delivery address in your booking confirmation (the \"Site\"). It begins when we finish setup and the walk-through at the Site, and ends when we pick the Sauna up.",
         "**Delivery only, no supervision.** Stillfire delivers, sets up and picks up the Sauna. Stillfire staff are not present during your rental and do not supervise, monitor or operate the Sauna. You operate it yourself and you are in charge of everyone who uses it.",
         "**Who may rent.** You must be at least 18 years old and able to enter a binding contract.",
@@ -58,7 +58,9 @@
       ] },
       { h: "Cold water and weather" },
       { ul: [
-        "Stillfire does not provide, inspect or supervise any lake, river, ice, snow, pool or cold plunge. Using them is entirely at your own risk. Never enter cold water alone, never dive, and stay off ice of unknown thickness.",
+        "If you rent an ice tub or ice bath from Stillfire, you fill it, add any ice after the first day, and supervise it yourself. Cold water can cause cold shock, gasping, fainting, a dangerous change in heart rhythm, hypothermia and drowning. Never use it alone. Keep each dip short, get out at once if you feel dizzy, numb or short of breath, and never put your head under. Never use it after alcohol or drugs. Children may use it only with an adult within arm's reach. Keep it covered or emptied when no adult is watching, because standing water is a drowning hazard for children and pets.",
+        "A tent sauna has fabric walls and a hot stove very close to them. Keep the door zipper clear, do not hang anything on or near the stove or chimney, do not exceed two people inside, and do not use it in high wind.",
+        "Apart from an ice tub or ice bath rented from us, Stillfire does not provide, inspect or supervise any lake, river, ice, snow, pool or cold plunge. Using them is entirely at your own risk. Never enter cold water alone, never dive, and stay off ice of unknown thickness.",
         "Stop using the Sauna in lightning, high wind or any weather that makes the Site unsafe."
       ] }
     ] },

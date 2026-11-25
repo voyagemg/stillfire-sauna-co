@@ -39,11 +39,14 @@
   function demoInfo() {
     var t = localToday();
     return { today: t, settings: withDefaults(),
-      unavailable: [{ start: addDays(t, 6), end: addDays(t, 8) }, { start: addDays(t, 19), end: addDays(t, 22) }, { start: addDays(t, 33), end: addDays(t, 34) }] };
+      unavailable: [{ start: addDays(t, 6), end: addDays(t, 8) }, { start: addDays(t, 19), end: addDays(t, 22) }, { start: addDays(t, 33), end: addDays(t, 34) }],
+      unavailable_tent: [{ start: addDays(t, 10), end: addDays(t, 12) }], unavailable_tub: [{ start: addDays(t, 6), end: addDays(t, 8) }], unavailable_bath: [] };
   }
 
   var ERR = {
     DATES_TAKEN: "Someone has just requested those dates. Please choose different ones.",
+    TUB_TAKEN: "The ice tub has just been booked for those dates. Untick it or choose different dates.",
+    BATH_TAKEN: "The ice bath has just been booked for those dates. Untick it or choose different dates.",
     DATES_BLOCKED: "Those dates aren't available. Please choose different ones.",
     TOO_SOON: "That delivery date is too soon to book online. Please pick a later date, or contact us and we'll try to fit you in.",
     TOO_LONG: "That stay is longer than we can book online. Please contact us about longer rentals.",
@@ -120,8 +123,28 @@
   // ------------------------------------------------------------ calendar
   var sel = { start: null, end: null };
   var viewMonth = null;
+  var product = "trailer";
   function isTaken(iso) {
-    return (info.unavailable || []).some(function (r) { return r.start <= iso && iso <= r.end; });
+    return ((product === "tent" ? info.unavailable_tent : info.unavailable) || []).some(function (r) { return r.start <= iso && iso <= r.end; });
+  }
+  function clash(list) { return !!(sel.start && sel.end) && (list || []).some(function (r) { return r.start <= sel.end && sel.start <= r.end; }); }
+  function on(id) { var el = $("#" + id); return !!(el && el.checked && !el.disabled); }
+  function syncAddons() {
+    [["bTub", "bTubIce", "bTubNote", info.unavailable_tub], ["bBath", "bBathIce", "bBathNote", info.unavailable_bath]].forEach(function (x) {
+      var box = $("#" + x[0]), ice = $("#" + x[1]), note = $("#" + x[2]);
+      if (!box) return;
+      var gone = clash(x[3]);
+      box.disabled = gone; if (gone) box.checked = false;
+      note.hidden = !gone;
+      ice.disabled = !box.checked; if (!box.checked) ice.checked = false;
+    });
+  }
+  function itemsText() {
+    var wood = Number(($("#bWood") || {}).value || 0);
+    return [product === "tent" ? "Tent sauna (1 to 2 people)" : "Trailer sauna",
+      on("bTub") ? "ice tub" + (on("bTubIce") ? " with first-day ice" : " (no ice)") : "",
+      on("bBath") ? "ice bath" + (on("bBathIce") ? " with first-day ice" : " (no ice)") : "",
+      wood ? wood + " firewood bundle" + (wood > 1 ? "s" : "") : ""].filter(Boolean).join("; ");
   }
   function minDate() { return addDays(info.today, Number(info.settings.min_notice_days || 0)); }
   function estimate() {
@@ -130,8 +153,13 @@
     var nights = Math.round((toDate(sel.end) - toDate(sel.start)) / 86400000);
     var miles = Number(($("#bMiles") || {}).value || 0);
     var wood = Number(($("#bWood") || {}).value || 0);
-    return Number(s.first_night_price) + (nights - 1) * Number(s.additional_night_price != null ? s.additional_night_price : s.first_night_price) +
-      Math.max(miles - Number(s.free_delivery_miles || 0), 0) * Number(s.per_mile_fee || 0) + wood * Number(s.firewood_bundle_price || 0);
+    var n = function (v) { return Number(v || 0); };
+    var first = product === "tent" ? n(s.tent_first_night_price) : n(s.first_night_price);
+    var more = product === "tent" ? n(s.tent_additional_night_price != null ? s.tent_additional_night_price : s.tent_first_night_price) : n(s.additional_night_price != null ? s.additional_night_price : s.first_night_price);
+    return first + (nights - 1) * more +
+      Math.max(miles - n(s.free_delivery_miles), 0) * n(s.per_mile_fee) + wood * n(s.firewood_bundle_price) +
+      (on("bTub") ? n(s.ice_tub_first_price) + (nights - 1) * n(s.ice_tub_additional_price) + (on("bTubIce") ? n(s.ice_tub_ice_price) : 0) : 0) +
+      (on("bBath") ? n(s.ice_bath_first_price) + (nights - 1) * n(s.ice_bath_additional_price) + (on("bBathIce") ? n(s.ice_bath_ice_price) : 0) : 0);
   }
   function nights() { return sel.start && sel.end ? Math.round((toDate(sel.end) - toDate(sel.start)) / 86400000) : 0; }
 
@@ -167,11 +195,12 @@
   }
   function renderSummary() {
     var box = $("#dateSummary");
+    syncAddons();
     if (!sel.start) { box.innerHTML = '<p style="margin:0">No dates chosen yet.</p>'; return; }
     if (!sel.end) { box.innerHTML = "<dl><dt>Delivery</dt><dd>" + esc(fmtDate(sel.start)) + "</dd><dt>Pickup</dt><dd>Now tap your pickup day</dd></dl>"; return; }
     var est = estimate(), n = nights();
-    box.innerHTML = "<dl><dt>Delivery</dt><dd>" + esc(fmtDate(sel.start)) + "</dd><dt>Pickup</dt><dd>" + esc(fmtDate(sel.end)) + "</dd><dt>Nights</dt><dd>" + n +
-      "</dd><dt>Estimate</dt><dd>" + (est == null ? "We'll confirm your total by email" : esc(money(est)) + " before any delivery fee we confirm") + "</dd></dl>";
+    box.innerHTML = "<dl><dt>Delivery</dt><dd>" + esc(fmtDate(sel.start)) + "</dd><dt>Pickup</dt><dd>" + esc(fmtDate(sel.end)) + "</dd><dt>Nights</dt><dd>" + n + "</dd><dt>Renting</dt><dd>" + esc(itemsText()) +
+      "</dd><dt>Estimate</dt><dd>" + (est == null ? "We'll confirm your total by email" : esc(money(est)) + " before sales tax and any delivery fee we confirm") + "</dd></dl>";
   }
   function shiftMonth(delta) {
     var d = toDate(viewMonth); d.setUTCMonth(d.getUTCMonth() + delta); viewMonth = toIso(d).slice(0, 8) + "01"; renderCal();
@@ -210,10 +239,10 @@
 
   function reviewHtml() {
     var est = estimate();
-    var rows = [["Delivery", fmtDate(sel.start)], ["Pickup", fmtDate(sel.end)], ["Nights", nights()], ["Name", val("bName")], ["Phone", val("bPhone")], ["Email", val("bEmail")],
+    var rows = [["Renting", itemsText()], ["Delivery", fmtDate(sel.start)], ["Pickup", fmtDate(sel.end)], ["Nights", nights()], ["Name", val("bName")], ["Phone", val("bPhone")], ["Email", val("bEmail")],
       ["Deliver to", val("bAddr") + ", " + val("bCity") + ", " + val("bState") + " " + val("bZip")], ["Group size", val("bGuests")], ["Occasion", val("bOccasion")],
-      ["Firewood", Number(val("bWood")) ? val("bWood") + " bundle(s)" : ""], ["Notes", val("bNotes")], ["Agreement", "Signed as " + val("aSig")],
-      ["Estimate", est == null ? "We'll confirm your total by email" : money(est) + " before any delivery fee we confirm"]];
+      ["Notes", val("bNotes")], ["Agreement", "Signed as " + val("aSig")],
+      ["Estimate", est == null ? "We'll confirm your total by email" : money(est) + " before sales tax and any delivery fee we confirm"]];
     return "<dl>" + rows.filter(function (r) { return r[1] !== "" && r[1] != null; }).map(function (r) { return "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>";
   }
   function sha256(text) {
@@ -233,6 +262,7 @@
         delivery_date: sel.start, pickup_date: sel.end, name: val("bName"), email: val("bEmail"), phone: val("bPhone"),
         address_line: val("bAddr"), city: val("bCity"), state: val("bState"), zip: val("bZip"),
         miles_from_base: val("bMiles"), guest_count: val("bGuests"), occasion: val("bOccasion"), firewood_bundles: val("bWood") || "0",
+        product: product, ice_tub: on("bTub"), ice_tub_ice: on("bTubIce"), ice_bath: on("bBath"), ice_bath_ice: on("bBathIce"),
         notes: val("bNotes"), site_confirmed: true, signature: val("aSig"), statements: [true, true, true, true],
         waiver_version: W.version, waiver_sha256: hash, waiver_text: wtext, user_agent: navigator.userAgent, website: val("bWebsite")
       };
@@ -250,6 +280,7 @@
       if (!preview) loadInfo();
     }).catch(function (e) {
       setMsg(msg, "err", errText(e));
+      if (/(TUB|BATH)_TAKEN/.test((e && e.message) || "")) { loadInfo().then(function () { showPane(1); renderCal(); setMsg($("#bookMsg"), "err", errText(e)); }); }
       if (/DATES_(TAKEN|BLOCKED)/.test((e && e.message) || "")) { sel = { start: null, end: null }; loadInfo().then(function () { showPane(1); setMsg($("#bookMsg"), "err", errText(e)); }); }
     }).then(function () { btn.disabled = false; btn.textContent = "Send request"; });
   }
@@ -260,6 +291,8 @@
     $("#agreementBox").innerHTML = W.html();
     $("#agreementFull").innerHTML = W.html();
     applySettings();
+    $$('input[name="bProduct"]').forEach(function (r) { r.addEventListener("change", function () { product = r.value; sel = { start: null, end: null }; setMsg($("#bookMsg"), "", ""); renderCal(); }); });
+    ["bTub", "bTubIce", "bBath", "bBathIce"].forEach(function (id) { var el = $("#" + id); if (el) el.addEventListener("change", renderSummary); });
 
     $("#calMonths").addEventListener("click", function (e) {
       var b = e.target.closest("button[data-d]");

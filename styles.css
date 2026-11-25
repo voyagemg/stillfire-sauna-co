@@ -231,3 +231,14 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
   .sheet a.btn { justify-content: center; margin-top: 10px; border-bottom: 0; color: #fff; }
   .foot { padding-bottom: 96px; }
 }
+
+/* booking: product and add-on choices */
+.legend + .pick { margin-top: 22px; }
+.pick { border: 1px solid var(--line, rgba(0,0,0,.15)); border-radius: 6px; padding: 16px 18px; margin: 0 0 22px 0; }
+.pick legend { padding: 0 8px; font-weight: 600; }
+.pick-opt { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; cursor: pointer; }
+.pick-opt input { margin-top: 5px; flex: none; }
+.pick-opt small { display: block; opacity: .8; font-size: .92em; }
+.pick .check.sub { margin-left: 30px; }
+.pick .hint { margin: 10px 0 0 0; font-size: .92em; opacity: .8; }
+.taken-note { color: #C23E22; font-weight: 600; }

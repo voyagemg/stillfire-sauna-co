@@ -12,7 +12,10 @@
     ["owner_notify_email", "Send owner alerts to", "email"], ["copy_email", "Send a copy of every email to", "email"], ["first_night_price", "First night ($)", "number"],
     ["additional_night_price", "Each additional night ($)", "number"], ["free_delivery_miles", "Free delivery within (miles)", "number"],
     ["per_mile_fee", "Per mile beyond that ($)", "number"], ["max_delivery_miles", "Farthest delivery (miles)", "number"],
-    ["damage_deposit", "Damage deposit ($)", "number"], ["firewood_bundle_price", "Firewood bundle ($)", "number"], ["seats", "Seats", "number"],
+    ["damage_deposit", "Damage deposit ($)", "number"], ["firewood_bundle_price", "Firewood bundle ($)", "number"],
+    ["tent_first_night_price", "Tent sauna, first night ($)", "number"], ["tent_additional_night_price", "Tent sauna, each night after ($)", "number"],
+    ["ice_tub_first_price", "Ice tub, first night ($)", "number"], ["ice_tub_additional_price", "Ice tub, each night after ($)", "number"], ["ice_tub_ice_price", "Ice tub, first-day ice ($)", "number"],
+    ["ice_bath_first_price", "Ice bath, first night ($)", "number"], ["ice_bath_additional_price", "Ice bath, each night after ($)", "number"], ["ice_bath_ice_price", "Ice bath, first-day ice ($)", "number"], ["seats", "Seats", "number"],
     ["min_notice_days", "Minimum notice (days)", "number"], ["max_nights", "Longest online booking (nights)", "number"],
     ["delivery_time", "Usual delivery time", "text"], ["pickup_time", "Usual pickup time", "text"],
     ["site_url", "Website address", "text"], ["review_url", "Review link", "text"]
@@ -86,9 +89,15 @@
     if (!w.length) return "No signatures yet";
     return w.map(function (x) { return esc(x.signer_name) + " (" + esc(x.role) + (x.minors ? ", for: " + esc(x.minors) : "") + ")"; }).join("; ");
   }
+  function items(b) {
+    return [b.product === "tent" ? "Tent sauna" : "Trailer sauna",
+      b.ice_tub ? "ice tub" + (b.ice_tub_ice ? " with first-day ice" : " (no ice)") : "",
+      b.ice_bath ? "ice bath" + (b.ice_bath_ice ? " with first-day ice" : " (no ice)") : "",
+      b.firewood_bundles ? b.firewood_bundles + " firewood bundle(s)" : ""].filter(Boolean).join("; ");
+  }
   function bookingCard(b, mode) {
     var h = '<div class="o-card"><span class="tag ' + esc(b.status) + '">' + esc(b.status) + "</span><h3>" + esc(b.customer_name) + " · " + esc(b.ref) + "</h3>" +
-      '<div class="o-meta"><div><b>Delivery</b> ' + esc(fmtDate(b.delivery_date)) + "</div><div><b>Pickup</b> " + esc(fmtDate(b.pickup_date)) + " (" + esc(b.nights) + " nights)</div>" +
+      '<div class="o-meta"><div><b>Renting</b> ' + esc(items(b)) + '</div><div><b>Delivery</b> ' + esc(fmtDate(b.delivery_date)) + "</div><div><b>Pickup</b> " + esc(fmtDate(b.pickup_date)) + " (" + esc(b.nights) + " nights)</div>" +
       "<div><b>Address</b> " + esc(b.address_line) + ", " + esc(b.city) + ", " + esc(b.state) + " " + esc(b.zip) + "</div><div><b>Miles from base</b> " + esc(b.miles_from_base == null ? "not given" : b.miles_from_base) + "</div>" +
       "<div><b>Phone</b> " + esc(b.phone) + "</div><div><b>Email</b> " + esc(b.email) + "</div>" +
       "<div><b>Group</b> " + esc(b.guest_count || "not given") + (b.occasion ? ", " + esc(b.occasion) : "") + "</div><div><b>Extra firewood</b> " + esc(b.firewood_bundles || 0) + " bundle(s)</div>" +

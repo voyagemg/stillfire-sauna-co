@@ -118,6 +118,7 @@
   <div class="wrap">
     <p class="eyebrow">Pricing</p>
     <h2>Simple, by the night.</h2>
+    <h3 style="margin-top:28px">The trailer sauna</h3>
     <p class="lede">Delivery, setup, the walk-through and pickup are part of every rental. We confirm your exact total before you pay anything.</p>
     <div class="grid g3" style="margin-top:36px">
       <div class="card"><h3>First night</h3><p class="price"><span data-s="first_night_price" data-fmt="money" data-ph="[YOUR PRICE]"></span></p><p>Includes delivery within <span data-s="free_delivery_miles" data-ph="[MILES]"></span> miles of <span data-s="base_town" data-ph="[BASE TOWN]"></span>.</p></div>
@@ -127,8 +128,16 @@
     <div class="grid g2" style="margin-top:28px">
       <div class="card"><h3>Refundable damage deposit</h3><p><span data-s="damage_deposit" data-fmt="money" data-ph="[DEPOSIT AMOUNT]"></span>. Pay by card and it is a hold on that card, not a charge, released after pickup. Otherwise we collect it at delivery and return it after pickup.</p></div>
       <div class="card"><h3>Ways to pay</h3><p>Cash, check or bank transfer: no fee. Card, Apple Pay, Google Pay or Cash App: 3% card fee, optional but convenient. Bank transfers take a few business days to clear. Minnesota sales tax (6.875%) is added to every rental.</p></div>
-      <div class="card"><h3>Firewood</h3><p><span data-s="firewood_bundle_price" data-fmt="money" data-ph="[PRICE]"></span> per bundle of dry, split wood, sold separately. Add bundles when you book.</p></div>
+      <div class="card"><h3>Firewood</h3><p><span data-s="firewood_bundle_price" data-fmt="money" data-ph="[PRICE]"></span> per bundle. Dry hardwood cut to size for the sauna stove. One bundle lasts about 4 to 6 hours. Add bundles when you book.</p></div>
     </div>
+    <h3 style="margin-top:44px">Tent sauna and cold plunge</h3>
+    <p class="lede">Add a cold plunge to your rental, or book the tent sauna on its own.</p>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="card"><h3>Tent sauna, 1 to 2 people</h3><p class="price"><span data-s="tent_first_night_price" data-fmt="money"></span> <small>first night</small></p><p><span data-s="tent_additional_night_price" data-fmt="money"></span> each night after. A wood-fired tent sauna for one or two, booked on its own calendar.</p></div>
+      <div class="card"><h3>Ice tub</h3><p class="price"><span data-s="ice_tub_first_price" data-fmt="money"></span> <small>first night</small></p><p><span data-s="ice_tub_additional_price" data-fmt="money"></span> each night after. The larger tub, a good match for the trailer sauna. Add first-day ice for <span data-s="ice_tub_ice_price" data-fmt="money"></span>.</p></div>
+      <div class="card"><h3>Ice bath</h3><p class="price"><span data-s="ice_bath_first_price" data-fmt="money"></span> <small>first night</small></p><p><span data-s="ice_bath_additional_price" data-fmt="money"></span> each night after. A smaller soft-sided bath, a good match for the tent sauna. Add first-day ice for <span data-s="ice_bath_ice_price" data-fmt="money"></span>.</p></div>
+    </div>
+    <p style="margin-top:16px">Ice is for the first day only. After that you supply your own.</p>
     <p style="margin-top:32px"><a class="btn" href="#book">Check dates</a></p>
   </div>
 </section>
@@ -183,7 +192,7 @@
     <details><summary>What should we bring?</summary><p>Towels, something to sit on, plenty of drinking water, clean water for the stones, and warm clothes and footwear for cooling off outside.</p></details>
     <details><summary>Can children use it?</summary><p>Children under <span class="ph">[MINIMUM AGE]</span> may not use the hot room. Older children may, with their parent or guardian inside with them the whole time. A parent or guardian signs the agreement for each child.</p></details>
     <details><summary>Can we drink in the sauna?</summary><p>No. Alcohol and heat are a dangerous mix, and the rental agreement doesn't allow alcohol or drugs before or during sauna use. Save the drink for afterwards.</p></details>
-    <details><summary>Do you provide a cold plunge?</summary><p>No. Many guests cool off in a lake, in snow or with their own tub. Stillfire doesn't provide, inspect or supervise any of these, and using them is at your own risk.</p></details>
+    <details><summary>Do you provide a cold plunge?</summary><p>Yes, as an add-on. Choose the larger ice tub or the smaller ice bath when you book, with or without ice for the first day. After the first day you supply your own ice. You fill and supervise it yourself, and the cold-water rules in the rental agreement apply. Lakes, snow and your own tubs are at your own risk.</p></details>
     <details><summary>Why is there a waiver?</summary><p>You run the sauna yourself, with a live fire, so the renter signs a rental agreement and release when booking. Every other adult signs before using it, using a link we send you.</p></details>
     <details><summary>What if we need to cancel?</summary><p>Cancel more than 48 hours before delivery and we refund half of what you paid. Within 48 hours of delivery there is no refund. Any deposit or deposit hold is returned or released either way. If we have to cancel for weather or a burn ban, you choose a new date or a full refund.</p></details>
     <details><summary>How far ahead should we book?</summary><p>Online requests need at least <span data-s="min_notice_days" data-ph="2"></span> days' notice. Weekends and holidays go first, so earlier is better. For something sooner, get in touch and we'll try.</p></details>
@@ -228,6 +237,10 @@
     <div id="bookMsg" role="alert" aria-live="assertive"></div>
 
     <div data-pane="1">
+      <fieldset class="pick"><legend>What would you like to rent?</legend>
+        <label class="pick-opt"><input type="radio" name="bProduct" value="trailer" checked><span><strong>Trailer sauna</strong><small>Seats six to seven. <span data-s="first_night_price" data-fmt="money"></span> first night, <span data-s="additional_night_price" data-fmt="money"></span> each night after.</small></span></label>
+        <label class="pick-opt"><input type="radio" name="bProduct" value="tent"><span><strong>Tent sauna</strong><small>For one or two people. <span data-s="tent_first_night_price" data-fmt="money"></span> first night, <span data-s="tent_additional_night_price" data-fmt="money"></span> each night after.</small></span></label>
+      </fieldset>
       <p>Tap your <strong>delivery day</strong>, then your <strong>pickup day</strong>. Crossed-out days are taken.</p>
       <div class="cal-head">
         <button class="btn ghost small" type="button" id="calPrev">Earlier</button>
@@ -235,6 +248,13 @@
       </div>
       <div class="cal-months" id="calMonths"></div>
       <p class="legend"><span>Open</span><span class="l-taken">Taken or too soon</span><span class="l-sel">Your stay</span></p>
+      <fieldset class="pick"><legend>Add a cold plunge (optional)</legend>
+        <div class="check"><input id="bTub" type="checkbox"><label for="bTub"><strong>Ice tub</strong>, the larger tub: <span data-s="ice_tub_first_price" data-fmt="money"></span> first night, <span data-s="ice_tub_additional_price" data-fmt="money"></span> each night after. <span class="taken-note" id="bTubNote" hidden>Already booked for these dates.</span></label></div>
+        <div class="check sub"><input id="bTubIce" type="checkbox" disabled><label for="bTubIce">Include ice for the first day (+<span data-s="ice_tub_ice_price" data-fmt="money"></span>)</label></div>
+        <div class="check"><input id="bBath" type="checkbox"><label for="bBath"><strong>Ice bath</strong>, the smaller soft-sided bath: <span data-s="ice_bath_first_price" data-fmt="money"></span> first night, <span data-s="ice_bath_additional_price" data-fmt="money"></span> each night after. <span class="taken-note" id="bBathNote" hidden>Already booked for these dates.</span></label></div>
+        <div class="check sub"><input id="bBathIce" type="checkbox" disabled><label for="bBathIce">Include ice for the first day (+<span data-s="ice_bath_ice_price" data-fmt="money"></span>)</label></div>
+        <p class="hint">Ice is for the first day only. After that you supply your own. Firewood is added on the next step.</p>
+      </fieldset>
       <div class="summary" id="dateSummary" aria-live="polite"><p style="margin:0">No dates chosen yet.</p></div>
       <div class="step-nav"><a class="btn ghost" href="#top">Back to site</a><button class="btn" type="button" data-next="2">Continue</button></div>
     </div>
@@ -258,7 +278,7 @@
       <div class="row2">
         <div class="field"><label for="bOccasion">Occasion (optional)</label>
           <select id="bOccasion"><option value="">Choose one</option><option>Cabin weekend</option><option>Family gathering</option><option>Wedding or celebration</option><option>Retreat or team event</option><option>Hunting or fishing camp</option><option>Race or sporting event</option><option>Something else</option></select></div>
-        <div class="field"><label for="bWood">Firewood bundles</label><input id="bWood" type="number" min="0" max="50" value="0" inputmode="numeric"></div>
+        <div class="field"><label for="bWood">Firewood bundles (<span data-s="firewood_bundle_price" data-fmt="money"></span> each, about 4 to 6 hours of heat)</label><input id="bWood" type="number" min="0" max="50" value="0" inputmode="numeric"></div>
       </div>
       <div class="field"><label for="bNotes">Anything we should know about the site or the stay? (optional)</label><textarea id="bNotes" maxlength="2000"></textarea></div>
       <h3>Your site</h3>
