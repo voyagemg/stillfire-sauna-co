@@ -16,7 +16,7 @@ window.STILLFIRE = {
     per_mile_fee: 2.5,
     damage_deposit: 250,
     firewood_bundle_price: 25, tent_first_night_price: 175, tent_additional_night_price: 125,
-    ice_tub_first_price: 100, ice_tub_additional_price: 25, ice_tub_ice_price: 100,
+    ice_tub_first_price: 100, ice_tub_additional_price: 25, ice_tub_ice_price: 75,
     ice_bath_first_price: 75, ice_bath_additional_price: 25, ice_bath_ice_price: 50
   },
 
