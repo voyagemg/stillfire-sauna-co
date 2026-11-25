@@ -33,7 +33,7 @@
         owner_note: null, created_at: new Date().toISOString() }, extra || {});
     };
     return {
-      bookings: [mk("DEMO01", "pending", 19, 22, "Sample Customer", "Detroit Lakes"), mk("DEMO02", "approved", 6, 8, "Example Renter", "Park Rapids", { quoted_total: 540 }),
+      bookings: [mk("DEMO01", "pending", 19, 22, "Sample Customer", "Detroit Lakes"), mk("DEMO02", "approved", 6, 8, "Example Renter", "Park Rapids", { quoted_total: 540, payment_status: "paid", amount_paid: 594.43, payment_method: "card", deposit_status: "held", stripe_payment_method_id: "demo" }), mk("DEMO04", "approved", 12, 13, "Waiting Payer", "Perham", { quoted_total: 300, payment_status: "unpaid", pay_deadline: new Date(Date.now() + 20 * 3600e3).toISOString(), pay_links_at: new Date().toISOString(), card_url: "#", deposit_status: "pending" }),
         mk("DEMO03", "completed", -12, -10, "Past Guest", "Perham", { quoted_total: 480 })],
       waivers: [{ booking_id: "DEMO01", role: "renter", signer_name: "Sample Customer", signed_at: new Date().toISOString() },
         { booking_id: "DEMO02", role: "renter", signer_name: "Example Renter", signed_at: new Date().toISOString() },
@@ -92,16 +92,56 @@
       "<div><b>Address</b> " + esc(b.address_line) + ", " + esc(b.city) + ", " + esc(b.state) + " " + esc(b.zip) + "</div><div><b>Miles from base</b> " + esc(b.miles_from_base == null ? "not given" : b.miles_from_base) + "</div>" +
       "<div><b>Phone</b> " + esc(b.phone) + "</div><div><b>Email</b> " + esc(b.email) + "</div>" +
       "<div><b>Group</b> " + esc(b.guest_count || "not given") + (b.occasion ? ", " + esc(b.occasion) : "") + "</div><div><b>Extra firewood</b> " + esc(b.firewood_bundles || 0) + " bundle(s)</div>" +
-      "<div><b>Estimate</b> " + (b.estimate == null ? "prices not set" : esc(money(b.estimate))) + "</div><div><b>Quoted</b> " + (b.quoted_total == null ? "not yet" : esc(money(b.quoted_total))) + "</div>" +
+      "<div><b>Estimate</b> " + (b.estimate == null ? "prices not set" : esc(money(b.estimate))) + "</div><div><b>Quoted before tax</b> " + (b.quoted_total == null ? "not yet" : esc(money(b.quoted_total))) + "</div>" + payHtml(b) +
       "<div><b>Signed</b> " + sigs(b.id) + "</div>" + (b.notes ? "<div><b>Notes</b> " + esc(b.notes) + "</div>" : "") + "</div>";
     if (mode === "pending") {
-      h += '<div class="o-actions"><div class="field"><label for="t-' + esc(b.id) + '">Total to quote ($)</label><input id="t-' + esc(b.id) + '" type="number" min="0" step="0.01" value="' + esc(b.estimate == null ? "" : b.estimate) + '"></div>' +
+      h += '<div class="o-actions"><div class="field"><label for="t-' + esc(b.id) + '">Subtotal before tax ($)</label><input id="t-' + esc(b.id) + '" type="number" min="0" step="0.01" value="' + esc(b.estimate == null ? "" : b.estimate) + '"></div>' +
         '<div class="field" style="flex:2 1 260px"><label for="n-' + esc(b.id) + '">Note to the customer (optional)</label><input id="n-' + esc(b.id) + '" type="text" maxlength="500"></div>' +
         '<button class="btn small" type="button" data-act="approve" data-id="' + esc(b.id) + '">Approve</button><button class="btn ghost small" type="button" data-act="decline" data-id="' + esc(b.id) + '">Decline</button></div>';
     } else if (mode === "approved") {
-      h += '<div class="o-actions"><button class="btn ghost small" type="button" data-act="cancel" data-id="' + esc(b.id) + '">Cancel this booking</button></div>';
+      h += '<div class="o-actions">' +
+        (b.payment_status === "unpaid" || b.payment_status === "processing" ? '<button class="btn small" type="button" data-act="markpaid" data-id="' + esc(b.id) + '">Mark paid by cash or check</button>' : "") +
+        (b.payment_status === "paid" && (b.deposit_status === "pending" || b.deposit_status === "failed") && b.stripe_payment_method_id ? '<button class="btn ghost small" type="button" data-act="dephold" data-id="' + esc(b.id) + '">Place deposit hold now</button>' : "") +
+        (b.deposit_status === "held" ? '<button class="btn small" type="button" data-act="deprelease" data-id="' + esc(b.id) + '">Release deposit hold</button>' +
+          '<div class="field"><label for="da-' + esc(b.id) + '">Charge from deposit ($)</label><input id="da-' + esc(b.id) + '" type="number" min="0" step="0.01"></div>' +
+          '<div class="field" style="flex:2 1 220px"><label for="dn-' + esc(b.id) + '">Reason (customer sees this)</label><input id="dn-' + esc(b.id) + '" type="text" maxlength="300"></div>' +
+          '<button class="btn ghost small" type="button" data-act="depcapture" data-id="' + esc(b.id) + '">Charge deposit</button>' : "") +
+        '<button class="btn ghost small" type="button" data-act="cancel" data-id="' + esc(b.id) + '">Cancel this booking</button></div>';
     }
     return h + "</div>";
+  }
+  function amounts(b) {
+    var s = (st.data && st.data.settings) || {}, r2 = function (n) { return Math.round(n * 100) / 100; };
+    var sub = Number(b.quoted_total || 0), taxP = Number(s.tax_percent == null ? 6.875 : s.tax_percent), feeP = Number(s.card_fee_percent == null ? 3 : s.card_fee_percent);
+    var fee = r2(sub * feeP / 100);
+    return { total: r2(sub + r2(sub * taxP / 100)), card: r2(sub + fee + r2((sub + fee) * taxP / 100)) };
+  }
+  function when(iso) { return new Date(iso).toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }); }
+  function payHtml(b) {
+    if (b.quoted_total == null || !b.payment_status || b.status === "pending" || b.status === "declined") return "";
+    var a = amounts(b), ps = b.payment_status, h = "";
+    var label = ps === "paid" ? "Paid " + money(b.amount_paid) + (b.payment_method ? " by " + b.payment_method : "") :
+      ps === "processing" ? "Bank transfer clearing (dates held)" : ps === "refunded" ? "Refunded" :
+      b.status === "approved" ? "NOT PAID. Dates release " + (b.pay_deadline ? when(b.pay_deadline) : "soon") : "Not paid";
+    h += '<div><b>Payment</b> <span class="tag ' + (ps === "paid" ? "approved" : ps === "processing" ? "pending" : "declined") + '">' + esc(label) + "</span></div>";
+    if (ps !== "paid" && b.status === "approved") h += "<div><b>Customer owes</b> " + esc(money(a.total)) + " by cash, check or bank transfer, or " + esc(money(a.card)) + " by card</div>";
+    if (b.status === "approved" && ps === "unpaid") h += "<div><b>Payment links</b> " + (b.pay_links_at ? (b.card_url ? "emailed" : "none made, customer was told to call") : "being created") + "</div>";
+    if (b.pay_error) h += '<div><b>Payment problem</b> ' + esc(b.pay_error) + "</div>";
+    if (b.invoice_url) h += '<div><b>Invoice</b> <a href="' + esc(b.invoice_url) + '" target="_blank" rel="noopener">Open paid invoice</a></div>';
+    var dep = { pending: "Hold will be placed on their card before delivery", held: "Held on card (not charged)", released: "Released", captured: "Charged " + money(b.deposit_captured), failed: "HOLD FAILED. Collect at delivery", in_person: "Collect at delivery (no card on file)" }[b.deposit_status] || "";
+    if (dep && ps === "paid") h += "<div><b>Deposit</b> " + esc(dep) + (b.deposit_note && b.deposit_status !== "held" ? " · " + esc(b.deposit_note) : "") + "</div>";
+    return h;
+  }
+  function ops(action, id, extra, okText) {
+    if (SF.preview) { st.note = ["info", "Preview only: in the live dashboard this would talk to Stripe."]; render(); return; }
+    var body = { action: action, booking_id: id }; for (var k in (extra || {})) body[k] = extra[k];
+    SF.db.functions.invoke("stripe-ops", { body: body }).then(function (r) {
+      var d = r.data || {};
+      if (r.error || d.error) st.note = ["err", d.error || "Stripe did not respond. Try again in a minute."];
+      else if (d.held === false) st.note = ["err", "The hold could not be placed: " + (d.note || "unknown reason")];
+      else st.note = ["ok", okText];
+      return load();
+    });
   }
   function requestsHtml() {
     var bs = st.data.bookings, t = SF.today();
@@ -176,9 +216,21 @@
       var total = ($("#t-" + id) || {}).value, note = (($("#n-" + id) || {}).value || "").trim();
       if (a === "approve" && (total === "" || total == null)) { st.note = ["err", "Enter the total to quote before approving."]; render(); return; }
       act(SF.preview ? null : d.from("bookings").update({ status: a === "approve" ? "approved" : "declined", quoted_total: total === "" ? null : Number(total), owner_note: note || null }).eq("id", id),
-        a === "approve" ? "Approved. The customer has been emailed. Send your invoice next." : "Declined. The customer has been emailed and the dates are open again.");
+        a === "approve" ? "Approved. The customer is being emailed their total and payment links. The dates release on their own if it is not paid in time." : "Declined. The customer has been emailed and the dates are open again.");
     } else if (a === "cancel") {
-      act(SF.preview ? null : d.from("bookings").update({ status: "cancelled" }).eq("id", id), "Cancelled. The customer has been emailed and the dates are open again.");
+      act(SF.preview ? null : d.from("bookings").update({ status: "cancelled" }).eq("id", id), "Cancelled. The customer has been emailed and the dates are open again. If they had paid, issue any refund in Stripe.");
+    } else if (a === "markpaid") {
+      if (!confirm("Mark this booking as paid by cash or check? The customer gets a confirmation email.")) return;
+      if (!SF.preview) SF.db.functions.invoke("stripe-ops", { body: { action: "expire_links", booking_id: id } });
+      act(SF.preview ? null : d.from("bookings").update({ payment_status: "paid" }).eq("id", id), "Marked paid. The customer has been emailed. Collect the deposit at delivery.");
+    } else if (a === "dephold") {
+      ops("deposit_hold", id, null, "Deposit hold placed. The customer has been emailed.");
+    } else if (a === "deprelease") {
+      ops("deposit_release", id, null, "Deposit hold released. The customer has been emailed.");
+    } else if (a === "depcapture") {
+      var amt = ($("#da-" + id) || {}).value, why = (($("#dn-" + id) || {}).value || "").trim();
+      if (!confirm("Charge $" + amt + " from this customer's deposit? This cannot be undone here.")) return;
+      ops("deposit_capture", id, { amount: Number(amt), note: why }, "Deposit charged. The customer has been emailed.");
     } else if (a === "unblock") {
       act(SF.preview ? null : d.from("blocked_dates").delete().eq("id", id), "Block removed. Those dates are open again.");
     } else if (a === "handled" || a === "reopen") {

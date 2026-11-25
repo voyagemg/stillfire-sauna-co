@@ -93,7 +93,7 @@
   }
 
   // ------------------------------------------------------------ page switching
-  var VIEWS = ["book", "agreement", "owner"];
+  var VIEWS = ["book", "agreement", "owner", "paid"];
   function route() {
     var h = (location.hash || "").replace("#", "");
     var view = VIEWS.indexOf(h) >= 0 ? h : (h === "guest" ? "agreement" : "home");

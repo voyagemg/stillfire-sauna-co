@@ -75,7 +75,7 @@
     <h2>Four steps, one fire.</h2>
     <div class="grid g4" style="margin-top:40px">
       <div class="step"><div class="num">1</div><h3>Request your dates</h3><p>Pick a delivery and pickup day on the calendar, tell us where it's going and sign the rental agreement. No payment yet.</p></div>
-      <div class="step"><div class="num">2</div><h3>We confirm</h3><p>We check the calendar and your site, confirm the total with delivery, and send an invoice. Paying it locks in the date.</p></div>
+      <div class="step"><div class="num">2</div><h3>We confirm</h3><p>We check the calendar and your site, confirm the total with delivery, and email you a link to pay. You have 24 hours to pay. The sauna is not held until payment is received.</p></div>
       <div class="step"><div class="num">3</div><h3>Delivery and walk-through</h3><p>We place and level the sauna, then walk you through lighting the stove and the safety rules.</p></div>
       <div class="step"><div class="num">4</div><h3>Sauna, then pickup</h3><p>It's yours for the stay. Let the fire burn out on the last night and we collect it the next day.</p></div>
     </div>
@@ -125,7 +125,8 @@
       <div class="card"><h3>Further afield</h3><p class="price"><span data-s="per_mile_fee" data-fmt="money" data-ph="[RATE]"></span> <small>per mile beyond the free zone</small></p><p>Tell us the address and we'll confirm the delivery fee.</p></div>
     </div>
     <div class="grid g2" style="margin-top:28px">
-      <div class="card"><h3>Refundable damage deposit</h3><p><span data-s="damage_deposit" data-fmt="money" data-ph="[DEPOSIT AMOUNT]"></span>, returned after we inspect the sauna at pickup.</p></div>
+      <div class="card"><h3>Refundable damage deposit</h3><p><span data-s="damage_deposit" data-fmt="money" data-ph="[DEPOSIT AMOUNT]"></span>. Pay by card and it is a hold on that card, not a charge, released after pickup. Otherwise we collect it at delivery and return it after pickup.</p></div>
+      <div class="card"><h3>Ways to pay</h3><p>Cash, check or bank transfer: no fee. Card, Apple Pay, Google Pay or Cash App: 3% card fee, optional but convenient. Bank transfers take a few business days to clear. Minnesota sales tax (6.875%) is added to every rental.</p></div>
       <div class="card"><h3>Firewood</h3><p><span data-s="firewood_bundle_price" data-fmt="money" data-ph="[PRICE]"></span> per bundle of dry, split wood, sold separately. Add bundles when you book.</p></div>
     </div>
     <p style="margin-top:32px"><a class="btn" href="#book">Check dates</a></p>
@@ -174,7 +175,8 @@
   <div class="wrap" style="max-width:860px">
     <p class="eyebrow">Questions</p>
     <h2>Before you book.</h2>
-    <details><summary>How does booking and payment work?</summary><p>You request dates on this site and sign the rental agreement. Your dates are held while we review the request. We then confirm the total, including delivery, and send an invoice. The booking is final once the invoice is paid.</p></details>
+    <details><summary>How does booking and payment work?</summary><p>You request dates on this site and sign the rental agreement. Your dates are held while we review the request. We then confirm the total, including delivery and sales tax, and email you a secure link to pay. You have 24 hours. The sauna is not held until payment is received, and unpaid dates are released.</p></details>
+    <details><summary>How can I pay?</summary><p>Pay in advance by cash, check, bank transfer, or card (including Apple Pay, Google Pay and Cash App). Paying by card adds a 3% card fee. It is not required, just convenient: cash, check and bank transfer have no fee. Bank transfers take a few business days to clear, and your dates stay held while they do. You get a paid invoice by email.</p></details>
     <details><summary>What does my site need?</summary><p>A firm, fairly level spot with clear access for a truck and trailer, kept well away from buildings, vehicles, tents and anything that can burn. In winter the path and the pad need to be cleared of snow and ice. No power or water hookup is needed.</p></details>
     <details><summary>How many people fit?</summary><p>The hot room seats six to seven adults, with room for a couple more on the sides. Larger groups take turns, which is half the fun.</p></details>
     <details><summary>Is it hard to run a wood stove?</summary><p>No. We walk you through lighting it, controlling the air and making steam when we deliver, and we leave written instructions. Heat-up takes about <span class="ph">[HEAT-UP TIME]</span>.</p></details>
@@ -183,7 +185,7 @@
     <details><summary>Can we drink in the sauna?</summary><p>No. Alcohol and heat are a dangerous mix, and the rental agreement doesn't allow alcohol or drugs before or during sauna use. Save the drink for afterwards.</p></details>
     <details><summary>Do you provide a cold plunge?</summary><p>No. Many guests cool off in a lake, in snow or with their own tub. Stillfire doesn't provide, inspect or supervise any of these, and using them is at your own risk.</p></details>
     <details><summary>Why is there a waiver?</summary><p>You run the sauna yourself, with a live fire, so the renter signs a rental agreement and release when booking. Every other adult signs before using it, using a link we send you.</p></details>
-    <details><summary>What if we need to cancel?</summary><p><span class="ph">[CANCELLATION TERMS]</span></p></details>
+    <details><summary>What if we need to cancel?</summary><p>Cancel more than 48 hours before delivery and we refund half of what you paid. Within 48 hours of delivery there is no refund. Any deposit or deposit hold is returned or released either way. If we have to cancel for weather or a burn ban, you choose a new date or a full refund.</p></details>
     <details><summary>How far ahead should we book?</summary><p>Online requests need at least <span data-s="min_notice_days" data-ph="2"></span> days' notice. Weekends and holidays go first, so earlier is better. For something sooner, get in touch and we'll try.</p></details>
   </div>
 </section>
@@ -290,8 +292,8 @@
       <h3>What happens next</h3>
       <ol>
         <li>We check the calendar and your delivery location, usually within one day.</li>
-        <li>You get a confirmation email with your total, then an invoice.</li>
-        <li>Your date is locked in once the invoice is paid.</li>
+        <li>When we approve it, you get an email with your total and a secure link to pay.</li>
+        <li>You have 24 hours to pay. The sauna is not held until payment is received.</li>
       </ol>
       <p>Other adults in your group need to sign the agreement before they use the sauna. Send them this link and your booking number:</p>
       <p class="mono" id="guestLink"></p>
@@ -332,6 +334,16 @@
 </div>
 
 <!-- ============================== OWNER ============================== -->
+<div data-view="paid" hidden>
+  <section><div class="wrap book-shell">
+    <p class="eyebrow">Payment</p>
+    <h2>Thank you. Your payment is in.</h2>
+    <p>If you paid by card, your sauna is reserved and a confirmation with your paid invoice is on its way by email. If you paid by bank transfer, your dates are held while the transfer clears, and we will email you when it does.</p>
+    <p>Every adult who will use the sauna signs the agreement first. Share the link below along with your booking number.</p>
+    <p><a class="btn" href="#agreement">Guest agreement</a> <a class="btn ghost" href="#top">Back to the site</a></p>
+  </div></section>
+</div>
+
 <div data-view="owner" hidden>
 <section>
   <div class="wrap">

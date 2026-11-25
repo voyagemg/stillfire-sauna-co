@@ -20,7 +20,7 @@ window.STILLFIRE = {
 
   // Change the version whenever the agreement wording changes. Every signature
   // records the version and the full text that was signed.
-  waiverVersion: "2026-11-23.2",
+  waiverVersion: "2026-11-24.1",
 
   // Fill these in after the attorney review. They are inserted into the agreement.
   legal: {
@@ -33,7 +33,7 @@ window.STILLFIRE = {
     deposit: "$250",
     cleaningFee: "[CLEANING FEE]",
     lostRentalRate: "[LOST-RENTAL DAILY RATE]",
-    cancellation: "[CANCELLATION TERMS]",
+    cancellation: "If you cancel more than 48 hours before the scheduled delivery, Stillfire refunds one half of what you paid for the rental and keeps the rest. If you cancel within 48 hours of the scheduled delivery, the full amount is due and nothing is refunded. Any damage deposit or deposit hold is returned or released in either case.",
     county: "[COUNTY]"
   }
 };

@@ -122,7 +122,7 @@
     ] },
     { t: "9. Payment, cancellation and ending the rental", b: [
       { ol: [
-        "**Payment.** The rental price, delivery fee, deposit and due dates are in your booking confirmation and invoice. A date is held only once Stillfire has approved the booking and received payment as the invoice requires.",
+        "**Payment.** The rental price, delivery fee, sales tax, deposit and payment deadline are in your approval email. Payment in full is due in advance. A date is held only once Stillfire has approved the booking and received payment; if payment is not received by the deadline, the dates are released. Paying by card adds a card processing fee, which you can avoid by paying with cash, check or bank transfer. If you pay by card, you authorize Stillfire to place a hold for the damage deposit on that card shortly before delivery and to charge against it as this agreement allows.",
         "**If you cancel.** " + L.cancellation,
         "**Weather and unsafe sites.** Stillfire may delay, reschedule or cancel a delivery if roads, weather, a burn ban or the Site make it unsafe, or if the Site does not match what you told us. If we cancel for weather or a burn ban, you may choose a new date or a refund of what you paid. If the Site is unsuitable through no fault of ours, the delivery fee is not refunded.",
         "**Ending the rental early.** Stillfire may end the rental and remove the Sauna, without a refund, if the safety rules are broken, the Sauna is being damaged, or it is being used in a way that puts people or property at risk.",
