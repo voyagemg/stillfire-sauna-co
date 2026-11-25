@@ -117,6 +117,7 @@
           '<button class="btn ghost small" type="button" data-act="depcapture" data-id="' + esc(b.id) + '">Charge deposit</button>' : "") +
         '<button class="btn ghost small" type="button" data-act="cancel" data-id="' + esc(b.id) + '">Cancel this booking</button></div>';
     }
+    if (st.cancel && st.cancel.id === b.id) h += cancelHtml(b);
     return h + "</div>";
   }
   function amounts(b) {
@@ -135,11 +136,35 @@
     h += '<div><b>Payment</b> <span class="tag ' + (ps === "paid" ? "approved" : ps === "processing" ? "pending" : "declined") + '">' + esc(label) + "</span></div>";
     if (ps !== "paid" && b.status === "approved") h += "<div><b>Customer owes</b> " + esc(money(a.total)) + " by cash, check or bank transfer, or " + esc(money(a.card)) + " by card</div>";
     if (b.status === "approved" && ps === "unpaid") h += "<div><b>Payment links</b> " + (b.pay_links_at ? (b.card_url ? "emailed" : "none made, customer was told to call") : "being created") + "</div>";
+    if (b.refund_amount != null) h += "<div><b>Refund</b> " + esc(money(b.refund_amount)) + (b.refund_method === "manual" && Number(b.refund_amount) > 0 ? " (return by cash or check)" : "") + "</div>";
     if (b.pay_error) h += '<div><b>Payment problem</b> ' + esc(b.pay_error) + "</div>";
     if (b.invoice_url) h += '<div><b>Invoice</b> <a href="' + esc(b.invoice_url) + '" target="_blank" rel="noopener">Open paid invoice</a></div>';
     var dep = { pending: "Hold will be placed on their card before delivery", held: "Held on card (not charged)", released: "Released", captured: "Charged " + money(b.deposit_captured), failed: "HOLD FAILED. Collect at delivery", in_person: "Collect at delivery (no card on file)" }[b.deposit_status] || "";
     if (dep && ps === "paid") h += "<div><b>Deposit</b> " + esc(dep) + (b.deposit_note && b.deposit_status !== "held" ? " · " + esc(b.deposit_note) : "") + "</div>";
     return h;
+  }
+  function cancelHtml(b) {
+    var c = st.cancel, paid = b.payment_status === "paid" ? Number(b.amount_paid || 0) : 0, r2 = function (n) { return Math.round(n * 100) / 100; };
+    var hours = (new Date(b.delivery_date + "T12:00:00") - new Date()) / 3600e3, policy = hours > 48 ? "half" : "none";
+    var manual = b.payment_method === "cash or check";
+    var box = '<div class="msg info" style="margin-top:16px"><h3 style="margin-top:0">Cancel ' + esc(b.ref) + "</h3>";
+    if (c.step === 1) {
+      if (b.payment_status === "processing") return box + "<p>A bank transfer for this booking is still clearing. Wait until it clears or fails before cancelling.</p>" + '<button class="btn ghost small" type="button" data-act="cancelback">Close</button></div>';
+      if (paid > 0) {
+        var opts = [["none", "No refund", 0], ["half", "Refund half", r2(paid / 2)], ["full", "Refund everything", paid]];
+        box += "<p>The customer paid <b>" + esc(money(paid)) + "</b>" + (b.payment_method ? " by " + esc(b.payment_method) : "") + ". Delivery is " + (hours > 0 ? "in about " + Math.round(hours) + " hours" : "already past") +
+          ". Your policy says: <b>" + (policy === "half" ? "refund half" : "no refund") + "</b>" + (policy === "half" ? " (more than 48 hours before delivery)." : " (inside 48 hours of delivery).") + "</p>" +
+          opts.map(function (x) { return '<div class="check"><input type="radio" name="rf" id="rf-' + x[0] + '" value="' + x[2] + '"' + (x[0] === policy ? " checked" : "") + '><label for="rf-' + x[0] + '">' + x[1] + ": <b>" + esc(money(x[2])) + "</b>" + (x[0] === policy ? " (policy)" : "") + "</label></div>"; }).join("") +
+          '<div class="check"><input type="radio" name="rf" id="rf-other" value="other"><label for="rf-other">Another amount: $ <input id="rfAmt" type="number" min="0" max="' + paid + '" step="0.01" style="width:120px;display:inline-block"></label></div>';
+      } else box += "<p>Nothing has been paid for this booking, so there is nothing to refund.</p>";
+      return box + '<div class="field"><label for="rfNote">Note to the customer (optional)</label><input id="rfNote" type="text" maxlength="500"></div>' +
+        '<div class="o-actions"><button class="btn small" type="button" data-act="cancelnext" data-id="' + esc(b.id) + '">Continue</button><button class="btn ghost small" type="button" data-act="cancelback">Keep this booking</button></div></div>';
+    }
+    return box + "<p><b>Please check before you confirm.</b></p><ul><li>Booking " + esc(b.ref) + " for " + esc(b.customer_name) + " will be cancelled and the dates opened up.</li>" +
+      (paid > 0 ? "<li>Refund: <b>" + esc(money(c.amount)) + "</b> of " + esc(money(paid)) + " paid" + (c.amount > 0 ? (manual ? ". They paid by cash or check, so you return this yourself." : ", sent back to their " + esc(b.payment_method || "card") + " through Stripe. A refund cannot be undone.") : ".") + "</li>" : "<li>No money moves.</li>") +
+      (b.deposit_status === "held" ? "<li>The deposit hold on their card is released.</li>" : "") +
+      "<li>The customer is emailed" + (c.note ? ' with your note: "' + esc(c.note) + '"' : "") + ".</li></ul>" +
+      '<div class="o-actions"><button class="btn small" type="button" data-act="cancelgo" data-id="' + esc(b.id) + '">Yes, cancel' + (c.amount > 0 ? " and refund " + esc(money(c.amount)) : "") + '</button><button class="btn ghost small" type="button" data-act="cancelstep1">Go back</button><button class="btn ghost small" type="button" data-act="cancelback">Keep this booking</button></div></div>';
   }
   function ops(action, id, extra, okText) {
     if (SF.preview) { st.note = ["info", "Preview only: in the live dashboard this would talk to Stripe."]; render(); return; }
@@ -227,7 +252,23 @@
       act(SF.preview ? null : d.from("bookings").update({ status: a === "approve" ? "approved" : "declined", quoted_total: total === "" ? null : Number(total), owner_note: note || null }).eq("id", id),
         a === "approve" ? "Approved. The customer is being emailed their total and payment links. The dates release on their own if it is not paid in time." : "Declined. The customer has been emailed and the dates are open again.");
     } else if (a === "cancel") {
-      act(SF.preview ? null : d.from("bookings").update({ status: "cancelled" }).eq("id", id), "Cancelled. The customer has been emailed and the dates are open again. If they had paid, issue any refund in Stripe.");
+      st.cancel = { id: id, step: 1, amount: 0, note: "" }; render();
+    } else if (a === "cancelback") {
+      st.cancel = null; render();
+    } else if (a === "cancelstep1") {
+      st.cancel.step = 1; render();
+    } else if (a === "cancelnext") {
+      var bk = st.data.bookings.filter(function (x) { return x.id === id; })[0] || {}, paidAmt = bk.payment_status === "paid" ? Number(bk.amount_paid || 0) : 0;
+      var pick = $('input[name="rf"]:checked'), amount = 0;
+      if (paidAmt > 0) {
+        if (!pick) { alert("Choose a refund option first."); return; }
+        amount = pick.value === "other" ? Number(($("#rfAmt") || {}).value) : Number(pick.value);
+        if (!(amount >= 0) || amount > paidAmt || (pick.value === "other" && ($("#rfAmt").value || "") === "")) { alert("Enter a refund amount between $0 and " + money(paidAmt) + "."); return; }
+      }
+      st.cancel = { id: id, step: 2, amount: Math.round(amount * 100) / 100, note: (($("#rfNote") || {}).value || "").trim() }; render();
+    } else if (a === "cancelgo") {
+      var cx = st.cancel; st.cancel = null; b.disabled = true;
+      ops("cancel_booking", id, { refund: cx.amount, note: cx.note }, cx.amount > 0 ? "Cancelled and refunded " + money(cx.amount) + ". The customer has been emailed and the dates are open again." : "Cancelled. The customer has been emailed and the dates are open again.");
     } else if (a === "markpaid") {
       if (!confirm("Mark this booking as paid by cash or check? The customer gets a confirmation email.")) return;
       if (!SF.preview) SF.db.functions.invoke("stripe-ops", { body: { action: "expire_links", booking_id: id } });

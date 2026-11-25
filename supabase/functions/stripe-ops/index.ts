@@ -1,5 +1,5 @@
 // Stillfire Sauna Co. — talks to Stripe on behalf of the database and the owner dashboard.
-// Actions: create_payment, expire_links, deposit_hold, deposit_release, deposit_capture.
+// Actions: create_payment, expire_links, deposit_hold, deposit_release, deposit_capture, cancel_booking.
 // Callers: the database (x-stillfire-key header) or a signed-in admin (Authorization header).
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -133,6 +133,40 @@ async function depositCapture(sb: ReturnType<typeof db>, b: any, a: any, amount:
   } catch (e) { return { error: msg(e) }; }
 }
 
+// Cancel a booking from the dashboard, refunding the chosen amount first. Nothing is cancelled if the refund fails.
+async function cancelBooking(sb: ReturnType<typeof db>, b: any, amount: unknown, note: unknown) {
+  if (!["approved", "pending"].includes(b.status)) return { error: "This booking is already closed." };
+  if (b.payment_status === "processing") return { error: "A bank transfer for this booking is still clearing. Wait until it clears or fails, or cancel the payment in Stripe first." };
+  const paid = b.payment_status === "paid" ? Number(b.amount_paid ?? 0) : 0;
+  const amt = Math.round(Number(amount ?? 0) * 100) / 100;
+  if (!(amt >= 0) || amt > paid) return { error: `The refund must be between $0 and $${paid.toFixed(2)}.` };
+  const patch: Record<string, unknown> = { status: "cancelled", cancel_reason: "owner", refund_amount: paid > 0 ? amt : null };
+  const why = String(note ?? "").trim().slice(0, 500);
+  if (why) patch.owner_note = why;
+  if (amt > 0) {
+    const manual = b.payment_method === "cash or check";
+    const sid = b.payment_method === "bank transfer" ? b.bank_session_id : b.card_session_id;
+    if (manual || !sid) patch.refund_method = "manual";
+    else {
+      try {
+        const session = await stripe("GET", `checkout/sessions/${sid}`);
+        const refund = await stripe("POST", "refunds", { payment_intent: session.payment_intent, amount: cents(amt), metadata: { booking_id: b.id } }, `refund-${b.id}-${cents(amt)}`);
+        patch.refund_method = "stripe"; patch.stripe_refund_id = refund.id;
+      } catch (e) { return { error: "Stripe could not make the refund, so nothing was cancelled: " + msg(e) }; }
+    }
+    patch.refunded_at = new Date().toISOString();
+    if (amt >= paid) patch.payment_status = "refunded";
+  }
+  if (b.deposit_status === "held" && b.deposit_pi_id) {
+    await stripe("POST", `payment_intents/${b.deposit_pi_id}/cancel`).catch(() => null);
+    patch.deposit_status = "released";
+  } else if (b.deposit_status === "pending") patch.deposit_status = "none";
+  await expire(b.card_session_id); await expire(b.bank_session_id);
+  const { error } = await sb.from("bookings").update(patch).eq("id", b.id);
+  if (error) return { error: (patch.stripe_refund_id ? "The refund went through but the booking could not be updated. Do not refund again. " : "") + error.message };
+  return { cancelled: true, refunded: amt, method: patch.refund_method ?? null };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -149,6 +183,7 @@ Deno.serve(async (req: Request) => {
       case "deposit_hold": return json(await depositHold(sb, b, a));
       case "deposit_release": return json(await depositRelease(sb, b));
       case "deposit_capture": return json(await depositCapture(sb, b, a, body.amount, body.note));
+      case "cancel_booking": return json(await cancelBooking(sb, b, body.refund, body.note));
       default: return json({ error: "Unknown action" }, 400);
     }
   } catch (e) { return json({ error: msg(e) }, 500); }
