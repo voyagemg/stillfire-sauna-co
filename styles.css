@@ -242,3 +242,5 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
 .pick .check.sub { margin-left: 30px; }
 .pick .hint { margin: 10px 0 0 0; font-size: .92em; opacity: .8; }
 .taken-note { color: #C23E22; font-weight: 600; }
+.pick .row3 { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; }
+@media (max-width: 620px) { .pick .row3 { grid-template-columns: minmax(0, 1fr); } }

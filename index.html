@@ -253,7 +253,15 @@
         <div class="check sub"><input id="bTubIce" type="checkbox" disabled><label for="bTubIce">Include ice for the first day (+<span data-s="ice_tub_ice_price" data-fmt="money"></span>)</label></div>
         <div class="check"><input id="bBath" type="checkbox"><label for="bBath"><strong>Ice bath</strong>, the smaller soft-sided bath: <span data-s="ice_bath_first_price" data-fmt="money"></span> first night, <span data-s="ice_bath_additional_price" data-fmt="money"></span> each night after. <span class="taken-note" id="bBathNote" hidden>Already booked for these dates.</span></label></div>
         <div class="check sub"><input id="bBathIce" type="checkbox" disabled><label for="bBathIce">Include ice for the first day (+<span data-s="ice_bath_ice_price" data-fmt="money"></span>)</label></div>
-        <p class="hint">Ice is for the first day only. After that you supply your own. Firewood is added on the next step.</p>
+        <p class="hint">Ice is for the first day only. After that you supply your own.</p>
+      </fieldset>
+      <fieldset class="pick"><legend>Your group, firewood and distance</legend>
+        <div class="row3">
+          <div class="field"><label for="bGuests">How many people in your group, roughly?</label><input id="bGuests" type="number" min="1" max="500" inputmode="numeric"></div>
+          <div class="field"><label for="bWood">Firewood bundles (<span data-s="firewood_bundle_price" data-fmt="money"></span> each, about 4 to 6 hours of heat)</label><input id="bWood" type="number" min="0" max="50" value="0" inputmode="numeric"></div>
+          <div class="field"><label for="bMiles">Miles from <span data-s="base_town" data-ph="[BASE TOWN]"></span>, roughly (optional)</label><input id="bMiles" type="number" min="0" max="1000" inputmode="numeric"></div>
+        </div>
+        <p class="hint" id="groupHint" hidden>The tent sauna fits one or two people at a time. For a bigger group, the trailer sauna seats six to seven.</p>
       </fieldset>
       <div class="summary" id="dateSummary" aria-live="polite"><p style="margin:0">No dates chosen yet.</p></div>
       <div class="step-nav"><a class="btn ghost" href="#top">Back to site</a><button class="btn" type="button" data-next="2">Continue</button></div>
@@ -272,13 +280,8 @@
         <div class="field"><label for="bZip">ZIP</label><input id="bZip" type="text" inputmode="numeric" autocomplete="postal-code" required maxlength="12"></div>
       </div>
       <div class="row2">
-        <div class="field"><label for="bMiles">Miles from <span data-s="base_town" data-ph="[BASE TOWN]"></span>, roughly (optional)</label><input id="bMiles" type="number" min="0" max="1000" inputmode="numeric"></div>
-        <div class="field"><label for="bGuests">How many people in your group?</label><input id="bGuests" type="number" min="1" max="500" inputmode="numeric"></div>
-      </div>
-      <div class="row2">
         <div class="field"><label for="bOccasion">Occasion (optional)</label>
           <select id="bOccasion"><option value="">Choose one</option><option>Cabin weekend</option><option>Family gathering</option><option>Wedding or celebration</option><option>Retreat or team event</option><option>Hunting or fishing camp</option><option>Race or sporting event</option><option>Something else</option></select></div>
-        <div class="field"><label for="bWood">Firewood bundles (<span data-s="firewood_bundle_price" data-fmt="money"></span> each, about 4 to 6 hours of heat)</label><input id="bWood" type="number" min="0" max="50" value="0" inputmode="numeric"></div>
       </div>
       <div class="field"><label for="bNotes">Anything we should know about the site or the stay? (optional)</label><textarea id="bNotes" maxlength="2000"></textarea></div>
       <h3>Your site</h3>
@@ -317,6 +320,7 @@
       </ol>
       <p>Other adults in your group need to sign the agreement before they use the sauna. Send them this link and your booking number:</p>
       <p class="mono" id="guestLink"></p>
+      <p>The link already carries your booking number, so your guests don't need to type it.</p>
       <p><a class="btn ghost" href="#top">Back to site</a></p>
     </div>
   </div>

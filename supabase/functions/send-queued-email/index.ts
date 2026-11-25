@@ -44,7 +44,7 @@ function contactLine(b?: Biz) {
   const bits = [b?.contact_phone ? `call or text ${esc(b.contact_phone)}` : "", b?.contact_email ? `email ${esc(b.contact_email)}` : ""].filter(Boolean);
   return bits.length ? `Questions? You can ${bits.join(" or ")}, or just reply to this message.` : "Questions? Just reply to this message.";
 }
-const guestLink = (d: P) => `${siteUrl(d.biz)}/#agreement`;
+const guestLink = (d: P) => `${siteUrl(d.biz)}/${d.ref ? "?b=" + encodeURIComponent(String(d.ref)) : ""}#agreement`;
 const sitePrep = [
   "A firm, level spot with clear access for a truck and trailer.",
   "In winter, the path and the pad cleared of snow and ice.",
@@ -75,7 +75,7 @@ function render(template: string, d: P): { subject: string; html: string } | nul
         (d.estimate ? p(`Estimated total: <strong>${money(d.estimate)}</strong>. We'll confirm the final amount, including delivery, when we approve the booking.`) : p("We'll confirm your total, including delivery, when we approve the booking.")) +
         p("<strong>What happens next</strong>") +
         list(["We check the calendar and your delivery location, usually within one day.", "When we approve it, we email your total and a secure link to pay. You can pay by card, Apple Pay, bank transfer, cash or check.", "You then have 24 hours to pay. The sauna is not reserved until payment is received, and unpaid dates are released."]) +
-        p(`Other adults in your group need to sign the agreement before they use the sauna. Send them this link and your booking number <strong>${esc(d.ref)}</strong>:<br><a href="${esc(guestLink(d))}">${esc(guestLink(d))}</a>`) +
+        p(`Other adults in your group need to sign the agreement before they use the sauna. Send them this link. It already carries your booking number <strong>${esc(d.ref)}</strong>:<br><a href="${esc(guestLink(d))}">${esc(guestLink(d))}</a>`) +
         p(contactLine(b)), b) };
     case "booking_approved":
       return { subject: `Your Stillfire booking is approved (${d.ref})`, html: layout(`You're on the calendar, ${first(d.name)}.`,

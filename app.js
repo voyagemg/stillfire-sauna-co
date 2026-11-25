@@ -196,6 +196,7 @@
   function renderSummary() {
     var box = $("#dateSummary");
     syncAddons();
+    var gh = $("#groupHint"); if (gh) gh.hidden = !(product === "tent" && Number(($("#bGuests") || {}).value || 0) > 2);
     if (!sel.start) { box.innerHTML = '<p style="margin:0">No dates chosen yet.</p>'; return; }
     if (!sel.end) { box.innerHTML = "<dl><dt>Delivery</dt><dd>" + esc(fmtDate(sel.start)) + "</dd><dt>Pickup</dt><dd>Now tap your pickup day</dd></dl>"; return; }
     var est = estimate(), n = nights();
@@ -251,7 +252,7 @@
       return Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, "0"); }).join("");
     }).catch(function () { return null; });
   }
-  function guestUrl() { return location.href.split("#")[0] + "#agreement"; }
+  function guestUrl(ref) { return location.href.split("#")[0].split("?")[0] + (ref ? "?b=" + encodeURIComponent(ref) : "") + "#agreement"; }
 
   function sendRequest() {
     var btn = $("#sendRequest"), msg = $("#bookMsg");
@@ -274,7 +275,7 @@
       $("#doneMsg").textContent = r.preview
         ? "Preview only: this is what a customer sees after sending. Nothing was saved or emailed."
         : "Thank you. Your request is in and your booking number is " + r.data.ref + ". We've emailed a copy to " + val("bEmail") + ".";
-      $("#guestLink").textContent = guestUrl() + "   ·   Booking number " + r.data.ref;
+      $("#guestLink").textContent = guestUrl(r.data.ref);
       showPane("done");
       sel = { start: null, end: null };
       if (!preview) loadInfo();
@@ -351,7 +352,10 @@
       }).catch(function (err) { setMsg(msg, "err", errText(err)); });
     });
 
-    ["bMiles", "bWood"].forEach(function (id) { $("#" + id).addEventListener("input", renderSummary); });
+    ["bMiles", "bWood", "bGuests"].forEach(function (id) { $("#" + id).addEventListener("input", renderSummary); });
+    // A guest link carries the booking number (?b=SF-XXXXXX), so guests don't have to type it.
+    var linkRef = (new URLSearchParams(location.search).get("b") || "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 20);
+    if (linkRef && $("#gRef")) { $("#gRef").value = linkRef; $("#gRef").readOnly = true; }
     // Occasions: tap one to see how it tends to go, then carry it into the booking form.
     var OCC = [
       { t: "Cabin weekends", opt: "Cabin weekend", p: "Park it by the lake and make the sauna the centre of the stay. Fire it up in the afternoon and let people drift in and out all evening.", l: ["Two or three nights gives everyone a turn", "Set it near the water for the walk to the dock", "Add a few firewood bundles for long evenings"] },
