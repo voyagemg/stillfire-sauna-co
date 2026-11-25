@@ -244,3 +244,6 @@ table.tbl { border-collapse: collapse; width: 100%; font-size: 0.94rem; backgrou
 .taken-note { color: #C23E22; font-weight: 600; }
 .pick .row3 { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; }
 @media (max-width: 620px) { .pick .row3 { grid-template-columns: minmax(0, 1fr); } }
+.msg .btn.ghost { color: #1B1917; border-color: #1B1917; background: #FFFCF7; }
+.msg .btn.ghost:hover { color: #9A2E16; border-color: #9A2E16; background: #FFFCF7; }
+.check[hidden] { display: none; }

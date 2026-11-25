@@ -137,11 +137,12 @@
       box.disabled = gone; if (gone) box.checked = false;
       note.hidden = !gone;
       ice.disabled = !box.checked; if (!box.checked) ice.checked = false;
+      ice.parentNode.hidden = !box.checked;
     });
   }
   function itemsText() {
     var wood = Number(($("#bWood") || {}).value || 0);
-    return [product === "tent" ? "Tent sauna (1 to 2 people)" : "Trailer sauna",
+    return [product === "tent" ? "Tent Sauna (1 to 2 people)" : "Cedar Sauna",
       on("bTub") ? "ice tub" + (on("bTubIce") ? " with first-day ice" : " (no ice)") : "",
       on("bBath") ? "ice bath" + (on("bBathIce") ? " with first-day ice" : " (no ice)") : "",
       wood ? wood + " firewood bundle" + (wood > 1 ? "s" : "") : ""].filter(Boolean).join("; ");
